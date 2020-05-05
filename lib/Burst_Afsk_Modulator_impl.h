@@ -51,7 +51,7 @@ namespace gr {
          bool d_newBurst;
          std::vector<float> d_fifo;
 
-         void _handleMessage(pmt::pmt_t &msg);
+         void _handleMessage(pmt::pmt_t msg);
 
          // Processing variables.
          std::vector<float> d_work;

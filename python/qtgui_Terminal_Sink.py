@@ -21,13 +21,13 @@
 import logging
 logger = logging.getLogger(__name__)
 
-from PyQt4 import (Qt, QtGui, QtCore)
+from PyQt5 import (Qt, QtGui, QtCore, QtWidgets)
 
 import numpy
 import pmt
 from gnuradio import gr
 
-class qtgui_Terminal_Sink(gr.sync_block, QtGui.QTextEdit):
+class qtgui_Terminal_Sink(gr.sync_block, QtWidgets.QTextEdit):
     """
     QT GUI block to print incoming PDUs to a text box.
 
@@ -44,7 +44,7 @@ class qtgui_Terminal_Sink(gr.sync_block, QtGui.QTextEdit):
     def __init__(self, fontSize=10, label="", append=True, *args, **kwargs):
         gr.sync_block.__init__(self, "qtgui_Terminal_Sink",[],[])
 
-        QtGui.QTextEdit.__init__(self, *args, **kwargs)
+        QtWidgets.QTextEdit.__init__(self, *args, **kwargs)
         self.message_port_register_in(pmt.intern("pdus"))
         self.set_msg_handler(pmt.intern("pdus"), self._msgHandler)
         if append:

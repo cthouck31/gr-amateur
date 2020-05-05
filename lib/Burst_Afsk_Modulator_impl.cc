@@ -126,7 +126,7 @@ namespace gr {
     };
 
     void
-    Burst_Afsk_Modulator_impl::_handleMessage(pmt::pmt_t &msg)
+    Burst_Afsk_Modulator_impl::_handleMessage(pmt::pmt_t msg)
     {
       unsigned int j, k, l;
       float accum;

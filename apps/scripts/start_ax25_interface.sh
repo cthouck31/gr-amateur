@@ -1,10 +1,14 @@
 #!/bin/bash
 
 # Get configuration variables.
-. ./ax25_interface.ini
+VSERIAL=/tmp/ttyS0
+IP_PORT=15331
+AX25_PORT=radio0
+NETW_ADDR=44.0.7.1
+
 
 # Start virtual serial port forwarding.
-CMD="socat -d -d pty,link=${VSERIAL},raw,echo=0 tcp-listen:${IP_PORT},reuseaddr,fork"
+CMD="socat pty,link=${VSERIAL},raw,echo=0 tcp-listen:${IP_PORT},reuseaddr,fork"
 echo "Creating PTY to TCP bridge: ${VSERIAL} <--> TCP-LISTEN:${IP_PORT}"
 echo "    > ${CMD}"
 $(${CMD}) &

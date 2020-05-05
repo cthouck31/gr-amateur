@@ -22,7 +22,7 @@
 import logging
 logger = logging.getLogger(__name__)
 
-from PyQt4 import (Qt, QtCore, QtGui)
+from PyQt5 import (Qt, QtCore, QtGui, QtWidgets)
 
 import shlex
 import subprocess
@@ -30,7 +30,7 @@ import numpy
 from gnuradio import gr
 
 
-class qtgui_Embedded_Terminal(gr.basic_block, QtGui.QWidget):
+class qtgui_Embedded_Terminal(gr.basic_block, QtWidgets.QWidget):
     """
     Simple embedded terminal emulator.
 
@@ -51,19 +51,19 @@ class qtgui_Embedded_Terminal(gr.basic_block, QtGui.QWidget):
             in_sig=None,
             out_sig=None)
 
-        QtGui.QWidget.__init__(self, *args, **kwargs)
+        QtWidgets.QWidget.__init__(self, *args, **kwargs)
 
         self.blacklist = blacklist
         self.prompt    = "$> "
 
-        self.lineLbl  = QtGui.QLabel(self.prompt)
+        self.lineLbl  = QtWidgets.QLabel(self.prompt)
         self.lineLbl.setAlignment(QtCore.Qt.AlignCenter)
-        self.lineEdit = QtGui.QLineEdit()
-        self.textBox  = QtGui.QTextEdit()
+        self.lineEdit = QtWidgets.QLineEdit()
+        self.textBox  = QtWidgets.QTextEdit()
         self.textBox.ensureCursorVisible()
         self.textBox.setReadOnly(True)
 
-        layout = QtGui.QGridLayout(self)
+        layout = QtWidgets.QGridLayout(self)
         layout.addWidget(self.textBox,  0, 0, 4, 16)
         layout.addWidget(self.lineLbl,  4, 0, 1, 1)
         layout.addWidget(self.lineEdit, 4, 1, 1, 15)

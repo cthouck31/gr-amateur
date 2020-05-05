@@ -59,7 +59,7 @@ namespace gr {
     }
 
     void
-    Burst_Injector_impl::_handleMessage(pmt::pmt_t &msg)
+    Burst_Injector_impl::_handleMessage(pmt::pmt_t msg)
     {
       std::vector<gr_complex> data;
       // Check message type.

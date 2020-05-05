@@ -5,8 +5,9 @@
 # Title: AX.25 - AFSK1200 Modem
 # Author: cthouck31
 # Description: Modem for communicating via AX.25 w/ AFSK1200 modulation (APRS, etc).
-# Generated: Wed Apr 29 00:14:55 2020
+# Generated: Tue May  5 13:48:31 2020
 ##################################################
+
 
 import os
 import sys
@@ -25,11 +26,10 @@ from gnuradio.filter import firdes
 from optparse import OptionParser
 import ConfigParser
 import amateur
+import limesdr
 import logging; logging.basicConfig()
 import math
-import osmosdr
 import pmt
-import time
 
 
 class AX25_Modem(gr.top_block):
@@ -72,7 +72,7 @@ class AX25_Modem(gr.top_block):
         self._tx_fs_config = ConfigParser.ConfigParser()
         self._tx_fs_config.read(configFile)
         try: tx_fs = self._tx_fs_config.getfloat('Transmit', 'fs')
-        except: tx_fs = 8e6
+        except: tx_fs = 2e6
         self.tx_fs = tx_fs
         self._tx_freq_config = ConfigParser.ConfigParser()
         self._tx_freq_config.read(configFile)
@@ -118,7 +118,7 @@ class AX25_Modem(gr.top_block):
         self._rx_fs_config = ConfigParser.ConfigParser()
         self._rx_fs_config.read(configFile)
         try: rx_fs = self._rx_fs_config.getfloat('Receive', 'fs')
-        except: rx_fs = 1.92e6
+        except: rx_fs = 2e6
         self.rx_fs = rx_fs
         self._rx_deviceArgs_config = ConfigParser.ConfigParser()
         self._rx_deviceArgs_config.read(configFile)
@@ -294,29 +294,26 @@ class AX25_Modem(gr.top_block):
         self.zeromq_pub_msg_sink_0 = zeromq.pub_msg_sink(debug_recv_zmqAddr, 10)
         self.single_pole_iir_filter_xx_0_0 = filter.single_pole_iir_filter_ff(csma_avgAlpha, 1)
         self.single_pole_iir_filter_xx_0 = filter.single_pole_iir_filter_ff(csma_noiseAlpha, 1)
-        self.osmosdr_source_0 = osmosdr.source( args="numchan=" + str(1) + " " + rx_deviceArgs )
-        self.osmosdr_source_0.set_sample_rate(rx_fs)
-        self.osmosdr_source_0.set_center_freq(rx_freq, 0)
-        self.osmosdr_source_0.set_freq_corr(rx_ppm, 0)
-        self.osmosdr_source_0.set_dc_offset_mode(0, 0)
-        self.osmosdr_source_0.set_iq_balance_mode(0, 0)
-        self.osmosdr_source_0.set_gain_mode(False, 0)
-        self.osmosdr_source_0.set_gain(rx_rfGain, 0)
-        self.osmosdr_source_0.set_if_gain(rx_ifGain, 0)
-        self.osmosdr_source_0.set_bb_gain(rx_bbGain, 0)
-        self.osmosdr_source_0.set_antenna(rx_ant, 0)
-        self.osmosdr_source_0.set_bandwidth(rx_bw, 0)
-          
-        self.osmosdr_sink_0 = osmosdr.sink( args="numchan=" + str(1) + " " + tx_deviceArgs )
-        self.osmosdr_sink_0.set_sample_rate(tx_fs)
-        self.osmosdr_sink_0.set_center_freq(tx_freq, 0)
-        self.osmosdr_sink_0.set_freq_corr(tx_ppm, 0)
-        self.osmosdr_sink_0.set_gain(tx_rfGain, 0)
-        self.osmosdr_sink_0.set_if_gain(tx_ifGain, 0)
-        self.osmosdr_sink_0.set_bb_gain(tx_bbGain, 0)
-        self.osmosdr_sink_0.set_antenna(tx_ant, 0)
-        self.osmosdr_sink_0.set_bandwidth(tx_bw, 0)
-          
+        self.limesdr_source_0 = limesdr.source('', 0, '')
+        self.limesdr_source_0.set_sample_rate(rx_fs)
+        self.limesdr_source_0.set_center_freq(rx_freq, 0)
+        self.limesdr_source_0.set_bandwidth(1.5e6,0)
+        self.limesdr_source_0.set_digital_filter(30.72e6/(2**4),0)
+        self.limesdr_source_0.set_gain(tx_rfGain,0)
+        self.limesdr_source_0.set_antenna(255,0)
+        self.limesdr_source_0.calibrate(2.5e6, 0)
+        self.limesdr_source_0.set_tcxo_dac(125)
+
+        self.limesdr_sink_0 = limesdr.sink('', 0, '', '')
+        self.limesdr_sink_0.set_sample_rate(tx_fs)
+        self.limesdr_sink_0.set_center_freq(tx_freq, 0)
+        self.limesdr_sink_0.set_bandwidth(5e6,0)
+        self.limesdr_sink_0.set_digital_filter(1e6,0)
+        self.limesdr_sink_0.set_gain(tx_rfGain,0)
+        self.limesdr_sink_0.set_antenna(255,0)
+        self.limesdr_sink_0.calibrate(2.5e6, 0)
+        self.limesdr_sink_0.set_tcxo_dac(125)
+
         self.blocks_transcendental_0_0 = blocks.transcendental('log', "float")
         self.blocks_transcendental_0 = blocks.transcendental('log', "float")
         self.blocks_threshold_ff_0 = blocks.threshold_ff(csma_snrThreshold, csma_snrThreshold, 0)
@@ -357,32 +354,32 @@ class AX25_Modem(gr.top_block):
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.AX25_AFSK_Demodulator_0, 'out'), (self.amateur_KISS_TNC_0, 'modem_resp'))    
-        self.msg_connect((self.AX25_AFSK_Demodulator_0, 'out'), (self.zeromq_pub_msg_sink_0, 'in'))    
-        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_data'), (self.AX25_AFSK1200_Modulator_0, 'in'))    
-        self.msg_connect((self.amateur_KISS_TNC_0, 'tnc_resp'), (self.blocks_socket_pdu_0, 'pdus'))    
-        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_data'), (self.zeromq_pub_msg_sink_0_0, 'in'))    
-        self.msg_connect((self.blocks_message_strobe_0, 'strobe'), (self.zeromq_pub_msg_sink_0_0_0, 'in'))    
-        self.msg_connect((self.blocks_socket_pdu_0, 'pdus'), (self.amateur_KISS_TNC_0, 'tnc_req'))    
-        self.connect((self.AX25_AFSK1200_Modulator_0, 0), (self.osmosdr_sink_0, 0))    
-        self.connect((self.AX25_AFSK_Demodulator_0, 2), (self.blocks_complex_to_mag_0, 0))    
-        self.connect((self.AX25_AFSK_Demodulator_0, 2), (self.zeromq_pub_sink_0, 0))    
-        self.connect((self.AX25_AFSK_Demodulator_0, 0), (self.zeromq_pub_sink_0_0_0, 0))    
-        self.connect((self.analog_agc2_xx_0, 0), (self.AX25_AFSK_Demodulator_0, 0))    
-        self.connect((self.blocks_and_const_xx_0, 0), (self.amateur_KISS_TNC_0, 0))    
-        self.connect((self.blocks_and_const_xx_0, 0), (self.zeromq_pub_sink_0_0_0_0, 0))    
-        self.connect((self.blocks_complex_to_mag_0, 0), (self.single_pole_iir_filter_xx_0, 0))    
-        self.connect((self.blocks_complex_to_mag_0, 0), (self.single_pole_iir_filter_xx_0_0, 0))    
-        self.connect((self.blocks_float_to_uchar_0, 0), (self.blocks_and_const_xx_0, 0))    
-        self.connect((self.blocks_multiply_const_vxx_0_0, 0), (self.blocks_threshold_ff_0, 0))    
-        self.connect((self.blocks_multiply_const_vxx_0_0, 0), (self.zeromq_pub_sink_0_0, 0))    
-        self.connect((self.blocks_sub_xx_0, 0), (self.blocks_multiply_const_vxx_0_0, 0))    
-        self.connect((self.blocks_threshold_ff_0, 0), (self.blocks_float_to_uchar_0, 0))    
-        self.connect((self.blocks_transcendental_0, 0), (self.blocks_sub_xx_0, 0))    
-        self.connect((self.blocks_transcendental_0_0, 0), (self.blocks_sub_xx_0, 1))    
-        self.connect((self.osmosdr_source_0, 0), (self.analog_agc2_xx_0, 0))    
-        self.connect((self.single_pole_iir_filter_xx_0, 0), (self.blocks_transcendental_0_0, 0))    
-        self.connect((self.single_pole_iir_filter_xx_0_0, 0), (self.blocks_transcendental_0, 0))    
+        self.msg_connect((self.AX25_AFSK_Demodulator_0, 'out'), (self.amateur_KISS_TNC_0, 'modem_resp'))
+        self.msg_connect((self.AX25_AFSK_Demodulator_0, 'out'), (self.zeromq_pub_msg_sink_0, 'in'))
+        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_data'), (self.AX25_AFSK1200_Modulator_0, 'in'))
+        self.msg_connect((self.amateur_KISS_TNC_0, 'tnc_resp'), (self.blocks_socket_pdu_0, 'pdus'))
+        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_data'), (self.zeromq_pub_msg_sink_0_0, 'in'))
+        self.msg_connect((self.blocks_message_strobe_0, 'strobe'), (self.zeromq_pub_msg_sink_0_0_0, 'in'))
+        self.msg_connect((self.blocks_socket_pdu_0, 'pdus'), (self.amateur_KISS_TNC_0, 'tnc_req'))
+        self.connect((self.AX25_AFSK1200_Modulator_0, 0), (self.limesdr_sink_0, 0))
+        self.connect((self.AX25_AFSK_Demodulator_0, 2), (self.blocks_complex_to_mag_0, 0))
+        self.connect((self.AX25_AFSK_Demodulator_0, 2), (self.zeromq_pub_sink_0, 0))
+        self.connect((self.AX25_AFSK_Demodulator_0, 0), (self.zeromq_pub_sink_0_0_0, 0))
+        self.connect((self.analog_agc2_xx_0, 0), (self.AX25_AFSK_Demodulator_0, 0))
+        self.connect((self.blocks_and_const_xx_0, 0), (self.amateur_KISS_TNC_0, 0))
+        self.connect((self.blocks_and_const_xx_0, 0), (self.zeromq_pub_sink_0_0_0_0, 0))
+        self.connect((self.blocks_complex_to_mag_0, 0), (self.single_pole_iir_filter_xx_0, 0))
+        self.connect((self.blocks_complex_to_mag_0, 0), (self.single_pole_iir_filter_xx_0_0, 0))
+        self.connect((self.blocks_float_to_uchar_0, 0), (self.blocks_and_const_xx_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0_0, 0), (self.blocks_threshold_ff_0, 0))
+        self.connect((self.blocks_multiply_const_vxx_0_0, 0), (self.zeromq_pub_sink_0_0, 0))
+        self.connect((self.blocks_sub_xx_0, 0), (self.blocks_multiply_const_vxx_0_0, 0))
+        self.connect((self.blocks_threshold_ff_0, 0), (self.blocks_float_to_uchar_0, 0))
+        self.connect((self.blocks_transcendental_0, 0), (self.blocks_sub_xx_0, 0))
+        self.connect((self.blocks_transcendental_0_0, 0), (self.blocks_sub_xx_0, 1))
+        self.connect((self.limesdr_source_0, 0), (self.analog_agc2_xx_0, 0))
+        self.connect((self.single_pole_iir_filter_xx_0, 0), (self.blocks_transcendental_0_0, 0))
+        self.connect((self.single_pole_iir_filter_xx_0_0, 0), (self.blocks_transcendental_0, 0))
 
     def get_configFile(self):
         return self.configFile
@@ -395,18 +392,6 @@ class AX25_Modem(gr.top_block):
         	self._tx_rfGain_config.add_section('Transmit')
         self._tx_rfGain_config.set('Transmit', 'rfGain', str(None))
         self._tx_rfGain_config.write(open(self.configFile, 'w'))
-        self._tx_ppm_config = ConfigParser.ConfigParser()
-        self._tx_ppm_config.read(self.configFile)
-        if not self._tx_ppm_config.has_section('Transmit'):
-        	self._tx_ppm_config.add_section('Transmit')
-        self._tx_ppm_config.set('Transmit', 'ppm', str(None))
-        self._tx_ppm_config.write(open(self.configFile, 'w'))
-        self._tx_ifGain_config = ConfigParser.ConfigParser()
-        self._tx_ifGain_config.read(self.configFile)
-        if not self._tx_ifGain_config.has_section('Transmit'):
-        	self._tx_ifGain_config.add_section('Transmit')
-        self._tx_ifGain_config.set('Transmit', 'ifGain', str(None))
-        self._tx_ifGain_config.write(open(self.configFile, 'w'))
         self._tx_fs_config = ConfigParser.ConfigParser()
         self._tx_fs_config.read(self.configFile)
         if not self._tx_fs_config.has_section('Transmit'):
@@ -419,48 +404,6 @@ class AX25_Modem(gr.top_block):
         	self._tx_freq_config.add_section('Transmit')
         self._tx_freq_config.set('Transmit', 'freq', str(None))
         self._tx_freq_config.write(open(self.configFile, 'w'))
-        self._tx_deviceArgs_config = ConfigParser.ConfigParser()
-        self._tx_deviceArgs_config.read(self.configFile)
-        if not self._tx_deviceArgs_config.has_section('Transmit'):
-        	self._tx_deviceArgs_config.add_section('Transmit')
-        self._tx_deviceArgs_config.set('Transmit', 'deviceArgs', str(None))
-        self._tx_deviceArgs_config.write(open(self.configFile, 'w'))
-        self._tx_bw_config = ConfigParser.ConfigParser()
-        self._tx_bw_config.read(self.configFile)
-        if not self._tx_bw_config.has_section('Transmit'):
-        	self._tx_bw_config.add_section('Transmit')
-        self._tx_bw_config.set('Transmit', 'bw', str(None))
-        self._tx_bw_config.write(open(self.configFile, 'w'))
-        self._tx_bbGain_config = ConfigParser.ConfigParser()
-        self._tx_bbGain_config.read(self.configFile)
-        if not self._tx_bbGain_config.has_section('Transmit'):
-        	self._tx_bbGain_config.add_section('Transmit')
-        self._tx_bbGain_config.set('Transmit', 'bbGain', str(None))
-        self._tx_bbGain_config.write(open(self.configFile, 'w'))
-        self._tx_ant_config = ConfigParser.ConfigParser()
-        self._tx_ant_config.read(self.configFile)
-        if not self._tx_ant_config.has_section('Transmit'):
-        	self._tx_ant_config.add_section('Transmit')
-        self._tx_ant_config.set('Transmit', 'ant', str(None))
-        self._tx_ant_config.write(open(self.configFile, 'w'))
-        self._rx_rfGain_config = ConfigParser.ConfigParser()
-        self._rx_rfGain_config.read(self.configFile)
-        if not self._rx_rfGain_config.has_section('Receive'):
-        	self._rx_rfGain_config.add_section('Receive')
-        self._rx_rfGain_config.set('Receive', 'rfGain', str(None))
-        self._rx_rfGain_config.write(open(self.configFile, 'w'))
-        self._rx_ppm_config = ConfigParser.ConfigParser()
-        self._rx_ppm_config.read(self.configFile)
-        if not self._rx_ppm_config.has_section('Receive'):
-        	self._rx_ppm_config.add_section('Receive')
-        self._rx_ppm_config.set('Receive', 'ppm', str(None))
-        self._rx_ppm_config.write(open(self.configFile, 'w'))
-        self._rx_ifGain_config = ConfigParser.ConfigParser()
-        self._rx_ifGain_config.read(self.configFile)
-        if not self._rx_ifGain_config.has_section('Receive'):
-        	self._rx_ifGain_config.add_section('Receive')
-        self._rx_ifGain_config.set('Receive', 'ifGain', str(None))
-        self._rx_ifGain_config.write(open(self.configFile, 'w'))
         self._rx_fs_config = ConfigParser.ConfigParser()
         self._rx_fs_config.read(self.configFile)
         if not self._rx_fs_config.has_section('Receive'):
@@ -473,24 +416,6 @@ class AX25_Modem(gr.top_block):
         	self._rx_freq_config.add_section('Receive')
         self._rx_freq_config.set('Receive', 'freq', str(None))
         self._rx_freq_config.write(open(self.configFile, 'w'))
-        self._rx_deviceArgs_config = ConfigParser.ConfigParser()
-        self._rx_deviceArgs_config.read(self.configFile)
-        if not self._rx_deviceArgs_config.has_section('Receive'):
-        	self._rx_deviceArgs_config.add_section('Receive')
-        self._rx_deviceArgs_config.set('Receive', 'deviceArgs', str(None))
-        self._rx_deviceArgs_config.write(open(self.configFile, 'w'))
-        self._rx_bbGain_config = ConfigParser.ConfigParser()
-        self._rx_bbGain_config.read(self.configFile)
-        if not self._rx_bbGain_config.has_section('Receive'):
-        	self._rx_bbGain_config.add_section('Receive')
-        self._rx_bbGain_config.set('Receive', 'bbGain', str(None))
-        self._rx_bbGain_config.write(open(self.configFile, 'w'))
-        self._rx_ant_config = ConfigParser.ConfigParser()
-        self._rx_ant_config.read(self.configFile)
-        if not self._rx_ant_config.has_section('Receive'):
-        	self._rx_ant_config.add_section('Receive')
-        self._rx_ant_config.set('Receive', 'ant', str(None))
-        self._rx_ant_config.write(open(self.configFile, 'w'))
         self._demod_pllLoopBw_config = ConfigParser.ConfigParser()
         self._demod_pllLoopBw_config.read(self.configFile)
         if not self._demod_pllLoopBw_config.has_section('Demod'):
@@ -659,6 +584,78 @@ class AX25_Modem(gr.top_block):
         	self._afsk_bitRate_config.add_section('AFSK')
         self._afsk_bitRate_config.set('AFSK', 'bitRate', str(None))
         self._afsk_bitRate_config.write(open(self.configFile, 'w'))
+        self._tx_ppm_config = ConfigParser.ConfigParser()
+        self._tx_ppm_config.read(self.configFile)
+        if not self._tx_ppm_config.has_section('Transmit'):
+        	self._tx_ppm_config.add_section('Transmit')
+        self._tx_ppm_config.set('Transmit', 'ppm', str(None))
+        self._tx_ppm_config.write(open(self.configFile, 'w'))
+        self._tx_ifGain_config = ConfigParser.ConfigParser()
+        self._tx_ifGain_config.read(self.configFile)
+        if not self._tx_ifGain_config.has_section('Transmit'):
+        	self._tx_ifGain_config.add_section('Transmit')
+        self._tx_ifGain_config.set('Transmit', 'ifGain', str(None))
+        self._tx_ifGain_config.write(open(self.configFile, 'w'))
+        self._tx_deviceArgs_config = ConfigParser.ConfigParser()
+        self._tx_deviceArgs_config.read(self.configFile)
+        if not self._tx_deviceArgs_config.has_section('Transmit'):
+        	self._tx_deviceArgs_config.add_section('Transmit')
+        self._tx_deviceArgs_config.set('Transmit', 'deviceArgs', str(None))
+        self._tx_deviceArgs_config.write(open(self.configFile, 'w'))
+        self._tx_bw_config = ConfigParser.ConfigParser()
+        self._tx_bw_config.read(self.configFile)
+        if not self._tx_bw_config.has_section('Transmit'):
+        	self._tx_bw_config.add_section('Transmit')
+        self._tx_bw_config.set('Transmit', 'bw', str(None))
+        self._tx_bw_config.write(open(self.configFile, 'w'))
+        self._tx_bbGain_config = ConfigParser.ConfigParser()
+        self._tx_bbGain_config.read(self.configFile)
+        if not self._tx_bbGain_config.has_section('Transmit'):
+        	self._tx_bbGain_config.add_section('Transmit')
+        self._tx_bbGain_config.set('Transmit', 'bbGain', str(None))
+        self._tx_bbGain_config.write(open(self.configFile, 'w'))
+        self._tx_ant_config = ConfigParser.ConfigParser()
+        self._tx_ant_config.read(self.configFile)
+        if not self._tx_ant_config.has_section('Transmit'):
+        	self._tx_ant_config.add_section('Transmit')
+        self._tx_ant_config.set('Transmit', 'ant', str(None))
+        self._tx_ant_config.write(open(self.configFile, 'w'))
+        self._rx_rfGain_config = ConfigParser.ConfigParser()
+        self._rx_rfGain_config.read(self.configFile)
+        if not self._rx_rfGain_config.has_section('Receive'):
+        	self._rx_rfGain_config.add_section('Receive')
+        self._rx_rfGain_config.set('Receive', 'rfGain', str(None))
+        self._rx_rfGain_config.write(open(self.configFile, 'w'))
+        self._rx_ppm_config = ConfigParser.ConfigParser()
+        self._rx_ppm_config.read(self.configFile)
+        if not self._rx_ppm_config.has_section('Receive'):
+        	self._rx_ppm_config.add_section('Receive')
+        self._rx_ppm_config.set('Receive', 'ppm', str(None))
+        self._rx_ppm_config.write(open(self.configFile, 'w'))
+        self._rx_ifGain_config = ConfigParser.ConfigParser()
+        self._rx_ifGain_config.read(self.configFile)
+        if not self._rx_ifGain_config.has_section('Receive'):
+        	self._rx_ifGain_config.add_section('Receive')
+        self._rx_ifGain_config.set('Receive', 'ifGain', str(None))
+        self._rx_ifGain_config.write(open(self.configFile, 'w'))
+        self._rx_deviceArgs_config = ConfigParser.ConfigParser()
+        self._rx_deviceArgs_config.read(self.configFile)
+        if not self._rx_deviceArgs_config.has_section('Receive'):
+        	self._rx_deviceArgs_config.add_section('Receive')
+        self._rx_deviceArgs_config.set('Receive', 'deviceArgs', str(None))
+        self._rx_deviceArgs_config.write(open(self.configFile, 'w'))
+        self._rx_bbGain_config = ConfigParser.ConfigParser()
+        self._rx_bbGain_config.read(self.configFile)
+        if not self._rx_bbGain_config.has_section('Receive'):
+        	self._rx_bbGain_config.add_section('Receive')
+        self._rx_bbGain_config.set('Receive', 'bbGain', str(None))
+        self._rx_bbGain_config.write(open(self.configFile, 'w'))
+        self._rx_ant_config = ConfigParser.ConfigParser()
+        self._rx_ant_config.read(self.configFile)
+        if not self._rx_ant_config.has_section('Receive'):
+        	self._rx_ant_config.add_section('Receive')
+        self._rx_ant_config.set('Receive', 'ant', str(None))
+        self._rx_ant_config.write(open(self.configFile, 'w'))
 
     def get_logLevel(self):
         return self.logLevel
@@ -679,7 +676,7 @@ class AX25_Modem(gr.top_block):
     def set_rx_freq(self, rx_freq):
         self.rx_freq = rx_freq
         self.set_settings_1(pmt.dict_add(self.settings_0, pmt.intern("rx_freq"), pmt.from_float(self.rx_freq)))
-        self.osmosdr_source_0.set_center_freq(self.rx_freq, 0)
+        self.limesdr_source_0.set_center_freq(self.rx_freq, 0)
 
     def get_settings_1(self):
         return self.settings_1
@@ -700,28 +697,26 @@ class AX25_Modem(gr.top_block):
 
     def set_tx_rfGain(self, tx_rfGain):
         self.tx_rfGain = tx_rfGain
-        self.osmosdr_sink_0.set_gain(self.tx_rfGain, 0)
+        self.limesdr_source_0.set_gain(self.tx_rfGain,0)
+        self.limesdr_sink_0.set_gain(self.tx_rfGain,0)
 
     def get_tx_ppm(self):
         return self.tx_ppm
 
     def set_tx_ppm(self, tx_ppm):
         self.tx_ppm = tx_ppm
-        self.osmosdr_sink_0.set_freq_corr(self.tx_ppm, 0)
 
     def get_tx_ifGain(self):
         return self.tx_ifGain
 
     def set_tx_ifGain(self, tx_ifGain):
         self.tx_ifGain = tx_ifGain
-        self.osmosdr_sink_0.set_if_gain(self.tx_ifGain, 0)
 
     def get_tx_fs(self):
         return self.tx_fs
 
     def set_tx_fs(self, tx_fs):
         self.tx_fs = tx_fs
-        self.osmosdr_sink_0.set_sample_rate(self.tx_fs)
         self.AX25_AFSK1200_Modulator_0.set_Fs(self.tx_fs)
 
     def get_tx_freq(self):
@@ -729,7 +724,7 @@ class AX25_Modem(gr.top_block):
 
     def set_tx_freq(self, tx_freq):
         self.tx_freq = tx_freq
-        self.osmosdr_sink_0.set_center_freq(self.tx_freq, 0)
+        self.limesdr_sink_0.set_center_freq(self.tx_freq, 0)
 
     def get_tx_deviceArgs(self):
         return self.tx_deviceArgs
@@ -742,21 +737,18 @@ class AX25_Modem(gr.top_block):
 
     def set_tx_bw(self, tx_bw):
         self.tx_bw = tx_bw
-        self.osmosdr_sink_0.set_bandwidth(self.tx_bw, 0)
 
     def get_tx_bbGain(self):
         return self.tx_bbGain
 
     def set_tx_bbGain(self, tx_bbGain):
         self.tx_bbGain = tx_bbGain
-        self.osmosdr_sink_0.set_bb_gain(self.tx_bbGain, 0)
 
     def get_tx_ant(self):
         return self.tx_ant
 
     def set_tx_ant(self, tx_ant):
         self.tx_ant = tx_ant
-        self.osmosdr_sink_0.set_antenna(self.tx_ant, 0)
 
     def get_settings(self):
         return self.settings
@@ -770,28 +762,24 @@ class AX25_Modem(gr.top_block):
 
     def set_rx_rfGain(self, rx_rfGain):
         self.rx_rfGain = rx_rfGain
-        self.osmosdr_source_0.set_gain(self.rx_rfGain, 0)
 
     def get_rx_ppm(self):
         return self.rx_ppm
 
     def set_rx_ppm(self, rx_ppm):
         self.rx_ppm = rx_ppm
-        self.osmosdr_source_0.set_freq_corr(self.rx_ppm, 0)
 
     def get_rx_ifGain(self):
         return self.rx_ifGain
 
     def set_rx_ifGain(self, rx_ifGain):
         self.rx_ifGain = rx_ifGain
-        self.osmosdr_source_0.set_if_gain(self.rx_ifGain, 0)
 
     def get_rx_fs(self):
         return self.rx_fs
 
     def set_rx_fs(self, rx_fs):
         self.rx_fs = rx_fs
-        self.osmosdr_source_0.set_sample_rate(self.rx_fs)
         self.AX25_AFSK_Demodulator_0.set_Fs(self.rx_fs)
 
     def get_rx_deviceArgs(self):
@@ -805,21 +793,18 @@ class AX25_Modem(gr.top_block):
 
     def set_rx_bw(self, rx_bw):
         self.rx_bw = rx_bw
-        self.osmosdr_source_0.set_bandwidth(self.rx_bw, 0)
 
     def get_rx_bbGain(self):
         return self.rx_bbGain
 
     def set_rx_bbGain(self, rx_bbGain):
         self.rx_bbGain = rx_bbGain
-        self.osmosdr_source_0.set_bb_gain(self.rx_bbGain, 0)
 
     def get_rx_ant(self):
         return self.rx_ant
 
     def set_rx_ant(self, rx_ant):
         self.rx_ant = rx_ant
-        self.osmosdr_source_0.set_antenna(self.rx_ant, 0)
 
     def get_rootLogger(self):
         return self.rootLogger

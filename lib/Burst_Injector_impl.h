@@ -33,7 +33,7 @@ namespace gr {
          std::vector<gr_complex> d_burst;
          bool d_newBurst;
          gr::thread::mutex d_lock;
-         void _handleMessage(pmt::pmt_t &msg);
+         void _handleMessage(pmt::pmt_t msg);
 
      public:
       Burst_Injector_impl(const std::string &lengthTag);
