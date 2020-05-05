@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<block>
+  <name>Message to JSON</name>
+  <key>amateur_Message_To_Json</key>
+  <category>[Amateur]</category>
+  <import>import amateur</import>
+  <make>amateur.Message_To_Json()</make>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+
+  <!-- Make one 'sink' node per input. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>pdus</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+
+  <!-- Make one 'source' node per output. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <source>
+    <name>json</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+</block>

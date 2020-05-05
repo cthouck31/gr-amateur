@@ -1,0 +1,2027 @@
+options:
+  parameters:
+    author: ''
+    category: '[GRC Hier Blocks]'
+    cmake_opt: ''
+    comment: ''
+    copyright: ''
+    description: AFSK1200 AX.25 modem using the LimeSDR Mini hardware.
+    gen_cmake: 'On'
+    gen_linking: dynamic
+    generate_options: qt_gui
+    hier_block_src_path: '.:'
+    id: AX25_Modem_LimeSDR_Mini
+    max_nouts: '0'
+    output_language: python
+    placement: (0,0)
+    qt_qss_theme: ''
+    realtime_scheduling: '1'
+    run: 'True'
+    run_command: '{python} -u {filename}'
+    run_options: run
+    sizing_mode: fixed
+    thread_safe_setters: ''
+    title: AX.25 Modem - LimeSDR Mini
+    window_size: '[4000, 4000]'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 8]
+    rotation: 0
+    state: enabled
+
+blocks:
+- name: afsk_bitRate
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: bitRate
+    section: AFSK
+    type: real
+    value: '1200.0'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [544, 1632]
+    rotation: 0
+    state: enabled
+- name: afsk_dcInsert
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: dcInsert
+    section: AFSK
+    type: int
+    value: '1'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [544, 2064]
+    rotation: 0
+    state: enabled
+- name: afsk_filterSyms
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: filterSyms
+    section: AFSK
+    type: int
+    value: '7'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [544, 2504]
+    rotation: 0
+    state: enabled
+- name: afsk_frameTag
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: frameTag
+    section: AFSK
+    type: string
+    value: '"tx_len"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [544, 2208]
+    rotation: 0
+    state: enabled
+- name: afsk_markFreq
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: markFreq
+    section: AFSK
+    type: real
+    value: '1200.0'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [544, 1776]
+    rotation: 0
+    state: enabled
+- name: afsk_rolloff
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: rolloff
+    section: AFSK
+    type: real
+    value: '0.7'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [544, 2352]
+    rotation: 0
+    state: enabled
+- name: afsk_spaceFreq
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: spaceFreq
+    section: AFSK
+    type: real
+    value: '2200.0'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [544, 1920]
+    rotation: 0
+    state: enabled
+- name: ax25_ipAddr
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: ipAddr
+    section: AX25
+    type: string
+    value: '"127.0.0.1"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 1632]
+    rotation: 0
+    state: enabled
+- name: ax25_ipPort
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: ipPort
+    section: AX25
+    type: string
+    value: '15331'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 1776]
+    rotation: 0
+    state: enabled
+- name: ax25_mtu
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: mtu
+    section: AX25
+    type: int
+    value: '10000'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 2208]
+    rotation: 0
+    state: enabled
+- name: ax25_numPostambles
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: numPostambles
+    section: AX25
+    type: int
+    value: '2'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 2064]
+    rotation: 0
+    state: enabled
+- name: ax25_numPreambles
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: numPreambles
+    section: AX25
+    type: int
+    value: '40'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 1920]
+    rotation: 0
+    state: enabled
+- name: csma_avgAlpha
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: avgAlpha
+    section: CSMA
+    type: real
+    value: '0.01'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [896, 1920]
+    rotation: 0
+    state: enabled
+- name: csma_enable
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: enable
+    section: CSMA
+    type: int
+    value: '1'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [896, 2064]
+    rotation: 0
+    state: enabled
+- name: csma_noiseAlpha
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: noiseAlpha
+    section: CSMA
+    type: real
+    value: '0.00001'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [896, 1776]
+    rotation: 0
+    state: enabled
+- name: csma_snrThreshold
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: snrThreshold
+    section: CSMA
+    type: real
+    value: '2.0'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [896, 1632]
+    rotation: 0
+    state: enabled
+- name: debug_bb_zmqAddr
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: bb_zmqAddr
+    section: Debug
+    type: string
+    value: '"tcp://127.0.0.1:18730"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 1632]
+    rotation: 0
+    state: enabled
+- name: debug_cs_zmqAddr
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: cs_zmqAddr
+    section: Debug
+    type: string
+    value: '"tcp://127.0.0.1:18736"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 2496]
+    rotation: 0
+    state: enabled
+- name: debug_recv_zmqAddr
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: recv_zmqAddr
+    section: Debug
+    type: string
+    value: '"tcp://127.0.0.1:18733"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 2064]
+    rotation: 0
+    state: enabled
+- name: debug_rxCtrl_zmqAddr
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: rxCtrl_zmqAddr
+    section: Debug
+    type: string
+    value: '"tcp://127.0.0.1:18738"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 2780]
+    rotation: 0
+    state: enabled
+- name: debug_sent_zmqAddr
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: sent_zmqAddr
+    section: Debug
+    type: string
+    value: '"tcp://127.0.0.1:18734"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 2208]
+    rotation: 0
+    state: enabled
+- name: debug_snr_zmqAddr
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: snr_zmqAddr
+    section: Debug
+    type: string
+    value: '"tcp://127.0.0.1:18731"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 1776]
+    rotation: 0
+    state: enabled
+- name: debug_stats_zmqAddr
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: stats_zmqAddr
+    section: Debug
+    type: string
+    value: '"tcp://127.0.0.1:18735"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 2352]
+    rotation: 0
+    state: enabled
+- name: debug_syms_zmqAddr
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: syms_zmqAddr
+    section: Debug
+    type: string
+    value: '"tcp://127.0.0.1:18732"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 1920]
+    rotation: 0
+    state: enabled
+- name: debug_txCtrl_zmqAddr
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: txCtrl_zmqAddr
+    section: Debug
+    type: string
+    value: '"tcp://127.0.0.1:18737"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 2636]
+    rotation: 0
+    state: enabled
+- name: demod_agcAttack
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: agcAttack
+    section: Demod
+    type: real
+    value: '0.1'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [720, 2064]
+    rotation: 0
+    state: enabled
+- name: demod_agcDecay
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: agcAttack
+    section: Demod
+    type: real
+    value: '0.01'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [720, 2208]
+    rotation: 0
+    state: enabled
+- name: demod_agcEnable
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: agcEnable
+    section: Demod
+    type: int
+    value: '1'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [720, 1920]
+    rotation: 0
+    state: enabled
+- name: demod_pllFreqMax
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: pllFreqMax
+    section: Demod
+    type: real
+    value: 2.0*3.1415926 / 20.0
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [720, 1776]
+    rotation: 0
+    state: enabled
+- name: demod_pllLoopBw
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: pllLoopBw
+    section: Demod
+    type: real
+    value: 2.0*3.1415926 / 350.0
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [720, 1632]
+    rotation: 0
+    state: enabled
+- name: logLvl
+  id: variable
+  parameters:
+    comment: ''
+    value: '{"info": logging.INFO, "debug": logging.DEBUG, "warning": logging.WARNING,
+      "warn": logging.WARN, "error": logging.ERROR}.get(logLevel.lower(), logging.INFO)'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [424, 24]
+    rotation: 0
+    state: enabled
+- name: rootLogger
+  id: variable
+  parameters:
+    comment: ''
+    value: amateur.setupLogging(level=logLvl)
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [496, 24]
+    rotation: 0
+    state: enabled
+- name: rx_ant
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: ant
+    section: Receive
+    type: string
+    value: '"RX"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 2640]
+    rotation: 0
+    state: enabled
+- name: rx_bbGain
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: bbGain
+    section: Receive
+    type: real
+    value: '0'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 2496]
+    rotation: 0
+    state: enabled
+- name: rx_bw
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: /home/cth/workspace/ham/gr-amateur/config/aprs-tx_hackrf-rx_rtlsdr.conf
+    option: bw
+    section: '[Receive]'
+    type: real
+    value: 0.1e6
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 2784]
+    rotation: 0
+    state: enabled
+- name: rx_deviceArgs
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: deviceArgs
+    section: Receive
+    type: string
+    value: '""'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 1632]
+    rotation: 0
+    state: enabled
+- name: rx_freq
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: freq
+    section: Receive
+    type: real
+    value: 144.390e6
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 1776]
+    rotation: 0
+    state: enabled
+- name: rx_fs
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: fs
+    section: Receive
+    type: real
+    value: 2e6
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 1920]
+    rotation: 0
+    state: enabled
+- name: rx_ifGain
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: ifGain
+    section: Receive
+    type: real
+    value: '0'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 2352]
+    rotation: 0
+    state: enabled
+- name: rx_ppm
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: ppm
+    section: Receive
+    type: real
+    value: '51'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 2064]
+    rotation: 0
+    state: enabled
+- name: rx_rfGain
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: rfGain
+    section: Receive
+    type: real
+    value: '70.0'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 2208]
+    rotation: 0
+    state: enabled
+- name: settings
+  id: variable
+  parameters:
+    comment: ''
+    value: settings_1
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1824, 528]
+    rotation: 0
+    state: disabled
+- name: settings_0
+  id: variable
+  parameters:
+    comment: ''
+    value: pmt.make_dict()
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1824, 400]
+    rotation: 0
+    state: disabled
+- name: settings_1
+  id: variable
+  parameters:
+    comment: ''
+    value: pmt.dict_add(settings_0, pmt.intern("rx_freq"), pmt.from_float(rx_freq))
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1824, 464]
+    rotation: 0
+    state: disabled
+- name: tx_ant
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: ant
+    section: Transmit
+    type: string
+    value: '"TX/RX"'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 2640]
+    rotation: 0
+    state: enabled
+- name: tx_bbGain
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: bbGain
+    section: Transmit
+    type: real
+    value: '0'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 2496]
+    rotation: 0
+    state: enabled
+- name: tx_bw
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: bw
+    section: Transmit
+    type: real
+    value: 0.1e6
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 2784]
+    rotation: 0
+    state: enabled
+- name: tx_deviceArgs
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: deviceArgs
+    section: Transmit
+    type: string
+    value: '""'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 1632]
+    rotation: 0
+    state: enabled
+- name: tx_freq
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: freq
+    section: Transmit
+    type: real
+    value: 144.390e6
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 1776]
+    rotation: 0
+    state: enabled
+- name: tx_fs
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: fs
+    section: Transmit
+    type: real
+    value: 2e6
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 1920]
+    rotation: 0
+    state: enabled
+- name: tx_ifGain
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: ifGain
+    section: Transmit
+    type: real
+    value: '0'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 2352]
+    rotation: 0
+    state: enabled
+- name: tx_ppm
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: ppm
+    section: Transmit
+    type: real
+    value: '26'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 2064]
+    rotation: 0
+    state: enabled
+- name: tx_rfGain
+  id: variable_config
+  parameters:
+    comment: ''
+    config_file: configFile
+    option: rfGain
+    section: Transmit
+    type: real
+    value: '10'
+    writeback: None
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 2208]
+    rotation: 0
+    state: enabled
+- name: AX25_AFSK1200_Modulator_0
+  id: AX25_AFSK1200_Modulator
+  parameters:
+    Fs: tx_fs
+    Mark: afsk_markFreq
+    Rs: afsk_bitRate
+    Space: afsk_spaceFreq
+    affinity: ''
+    alias: ''
+    alpha: afsk_rolloff
+    comment: AX.25 - AFSK modulator.
+    dcInsert: afsk_dcInsert
+    frameTag: afsk_frameTag
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    numPost: ax25_numPostambles
+    numRevs: ax25_numPreambles
+    numSyms: afsk_filterSyms
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [920, 260]
+    rotation: 0
+    state: disabled
+- name: AX25_AFSK_Demodulator_0
+  id: AX25_AFSK_Demodulator
+  parameters:
+    Fs: rx_fs
+    Mark: afsk_markFreq
+    Rs: afsk_bitRate
+    Space: afsk_spaceFreq
+    affinity: ''
+    alias: ''
+    alpha: afsk_rolloff
+    comment: AX.25 - AFSK Demodulator.
+    frameTag: afsk_frameTag
+    lockFreq: demod_pllFreqMax
+    loopBw: demod_pllLoopBw
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    numSyms: afsk_filterSyms
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [872, 580]
+    rotation: 180
+    state: disabled
+- name: amateur_KISS_TNC_0
+  id: amateur_KISS_TNC
+  parameters:
+    affinity: ''
+    alias: ''
+    bitRate: '1200.0'
+    comment: KISS TNC controller.
+    csma: 'True'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    numPostambles: '1'
+    numPreambles: '1'
+    portNum: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [528, 320]
+    rotation: 0
+    state: enabled
+- name: analog_agc2_xx_0
+  id: analog_agc2_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    attack_rate: demod_agcAttack if (demod_agcEnable) else 0.0
+    comment: Automatic gain control.
+    decay_rate: demod_agcDecay if (demod_agcEnable) else 0.0
+    gain: '1.0'
+    max_gain: '65536'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    reference: '1.0'
+    type: complex
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1192, 612]
+    rotation: 180
+    state: disabled
+- name: blocks_and_const_xx_0
+  id: blocks_and_const_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: 0x01 if (csma_enable) else 0x00
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: byte
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1472, 932]
+    rotation: 0
+    state: disabled
+- name: blocks_complex_to_arg_0
+  id: blocks_complex_to_arg
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [216, 952]
+    rotation: 0
+    state: disabled
+- name: blocks_complex_to_mag_0
+  id: blocks_complex_to_mag
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [216, 912]
+    rotation: 0
+    state: disabled
+- name: blocks_float_to_uchar_0
+  id: blocks_float_to_uchar
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1296, 936]
+    rotation: 0
+    state: disabled
+- name: blocks_message_debug_0
+  id: blocks_message_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [744, 160]
+    rotation: 90
+    state: enabled
+- name: blocks_message_debug_0_0
+  id: blocks_message_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 160]
+    rotation: 90
+    state: disabled
+- name: blocks_message_debug_0_0_0
+  id: blocks_message_debug
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [232, 424]
+    rotation: 0
+    state: enabled
+- name: blocks_multiply_const_vxx_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: '0.5'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1216, 332]
+    rotation: 0
+    state: disabled
+- name: blocks_multiply_const_vxx_0_0
+  id: blocks_multiply_const_vxx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    const: 20.0/math.log(10)
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [912, 932]
+    rotation: 0
+    state: disabled
+- name: blocks_null_source_0
+  id: blocks_null_source
+  parameters:
+    affinity: ''
+    alias: ''
+    bus_structure_source: '[[0,],]'
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_outputs: '1'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [376, 392.0]
+    rotation: 0
+    state: true
+- name: blocks_socket_pdu_0
+  id: blocks_socket_pdu
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: AX.25 interface input.
+    host: ax25_ipAddr
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    mtu: ax25_mtu
+    port: ax25_ipPort
+    tcp_no_delay: 'False'
+    type: TCP_SERVER
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [232, 296]
+    rotation: 0
+    state: enabled
+- name: blocks_sub_xx_0
+  id: blocks_sub_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: SNR estimation.
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    num_inputs: '2'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [792, 920]
+    rotation: 0
+    state: disabled
+- name: blocks_threshold_ff_0
+  id: blocks_threshold_ff
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: SNR thresholding.
+    high: csma_snrThreshold
+    init: '0'
+    low: csma_snrThreshold
+    maxoutbuf: '0'
+    minoutbuf: '0'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1088, 916]
+    rotation: 0
+    state: disabled
+- name: blocks_transcendental_0
+  id: blocks_transcendental
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: log
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 896]
+    rotation: 0
+    state: disabled
+- name: blocks_transcendental_0_0
+  id: blocks_transcendental
+  parameters:
+    affinity: ''
+    alias: ''
+    comment: ''
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    name: log
+    type: float
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 976]
+    rotation: 0
+    state: disabled
+- name: configFile
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Configuration File
+    short_id: ''
+    type: ''
+    value: '"~/.config/gr-amateur/AX25_Modem-LimeSDRMini.ini"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 152]
+    rotation: 0
+    state: enabled
+- name: import_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import math
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [8, 248]
+    rotation: 0
+    state: enabled
+- name: import_0_0_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import logging; logging.basicConfig()
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [208, 24]
+    rotation: 0
+    state: enabled
+- name: import_0_0_0_0
+  id: import
+  parameters:
+    alias: ''
+    comment: ''
+    imports: import amateur
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [208, 72]
+    rotation: 0
+    state: enabled
+- name: limesdr_sink_0
+  id: limesdr_sink
+  parameters:
+    affinity: ''
+    alias: ''
+    allow_tcxo_dac: '1'
+    analog_bandw_ch0: max([5e6, tx_bw])
+    analog_bandw_ch1: 5e6
+    calibr_bandw_ch0: max([5e6, 8*afsk_bitRate])
+    calibr_bandw_ch1: 5e6
+    channel_mode: '0'
+    comment: ''
+    dacVal: '125'
+    digital_bandw_ch0: tx_fs
+    digital_bandw_ch1: '0'
+    filename: ''
+    gain_dB_ch0: int(tx_rfGain)
+    gain_dB_ch1: '30'
+    length_tag_name: ''
+    nco_freq_ch0: '0'
+    nco_freq_ch1: '0'
+    oversample: '0'
+    pa_path_ch0: '255'
+    pa_path_ch1: '1'
+    rf_freq: tx_freq
+    samp_rate: tx_fs
+    serial: tx_deviceArgs
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1416, 252]
+    rotation: 0
+    state: disabled
+- name: limesdr_source_0
+  id: limesdr_source
+  parameters:
+    affinity: ''
+    alias: ''
+    allow_tcxo_dac: '1'
+    analog_bandw_ch0: max([1.5e6, rx_bw])
+    analog_bandw_ch1: 5e6
+    calibr_bandw_ch0: max([2.5e6, 8*afsk_bitRate])
+    calibr_bandw_ch1: 5e6
+    channel_mode: '0'
+    comment: ''
+    dacVal: '125'
+    digital_bandw_ch0: rx_fs
+    digital_bandw_ch1: '0'
+    filename: ''
+    gain_dB_ch0: int(rx_rfGain)
+    gain_dB_ch1: '30'
+    lna_path_ch0: '255'
+    lna_path_ch1: '2'
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    nco_freq_ch0: '0'
+    nco_freq_ch1: '0'
+    oversample: '0'
+    rf_freq: rx_freq
+    samp_rate: rx_fs
+    serial: rx_deviceArgs
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1400, 556]
+    rotation: 180
+    state: disabled
+- name: logLevel
+  id: parameter
+  parameters:
+    alias: ''
+    comment: ''
+    hide: none
+    label: Log Level
+    short_id: ''
+    type: ''
+    value: '"debug"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [320, 24]
+    rotation: 0
+    state: enabled
+- name: note_0
+  id: note
+  parameters:
+    alias: ''
+    comment: ''
+    note: '"Transmitter Settings"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [16, 1584]
+    rotation: 0
+    state: enabled
+- name: note_0_0
+  id: note
+  parameters:
+    alias: ''
+    comment: ''
+    note: '"Receiver Settings"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [192, 1584]
+    rotation: 0
+    state: enabled
+- name: note_0_0_0
+  id: note
+  parameters:
+    alias: ''
+    comment: ''
+    note: '"AX.25 Settings"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [368, 1584]
+    rotation: 0
+    state: enabled
+- name: note_0_0_0_0
+  id: note
+  parameters:
+    alias: ''
+    comment: ''
+    note: '"AFSK Settings"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [544, 1584]
+    rotation: 0
+    state: enabled
+- name: note_0_0_0_0_0
+  id: note
+  parameters:
+    alias: ''
+    comment: ''
+    note: '"Demodulator Settings"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [720, 1584]
+    rotation: 0
+    state: enabled
+- name: note_0_0_0_0_0_0
+  id: note
+  parameters:
+    alias: ''
+    comment: ''
+    note: '"CSMA Settings"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [896, 1584]
+    rotation: 0
+    state: enabled
+- name: note_0_0_0_0_0_0_0
+  id: note
+  parameters:
+    alias: ''
+    comment: ''
+    note: '"Debug Settings"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1064, 1584]
+    rotation: 0
+    state: enabled
+- name: note_0_1
+  id: note
+  parameters:
+    alias: ''
+    comment: ''
+    note: '"Carrier Sense"'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 848]
+    rotation: 0
+    state: enabled
+- name: single_pole_iir_filter_xx_0
+  id: single_pole_iir_filter_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: csma_noiseAlpha
+    comment: Noise averaging (long term).
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 976]
+    rotation: 0
+    state: disabled
+- name: single_pole_iir_filter_xx_0_0
+  id: single_pole_iir_filter_xx
+  parameters:
+    affinity: ''
+    alias: ''
+    alpha: csma_avgAlpha
+    comment: Magnitude averaging (short term).
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 896]
+    rotation: 0
+    state: disabled
+- name: virtual_sink_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: Carrier sense.
+    stream_id: csense
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1632, 932]
+    rotation: 0
+    state: disabled
+- name: virtual_sink_0_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: tnc_resp
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [528, 464]
+    rotation: 180
+    state: enabled
+- name: virtual_sink_0_0_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: recv
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [688, 692]
+    rotation: 180
+    state: disabled
+- name: virtual_sink_0_0_0_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: bb
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [720, 596]
+    rotation: 180
+    state: disabled
+- name: virtual_sink_0_0_0_0_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: pll
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [600, 628]
+    rotation: 180
+    state: disabled
+- name: virtual_sink_0_0_0_0_0_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: syms
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [488, 660]
+    rotation: 180
+    state: disabled
+- name: virtual_sink_0_0_0_1
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: mag
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 1064]
+    rotation: 0
+    state: disabled
+- name: virtual_sink_0_0_0_1_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: phi
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [400, 1112]
+    rotation: 0
+    state: disabled
+- name: virtual_sink_0_0_0_1_1
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: snr
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1088, 1024]
+    rotation: 0
+    state: disabled
+- name: virtual_sink_0_0_0_1_1_0
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: trigger
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1296, 1032]
+    rotation: 0
+    state: disabled
+- name: virtual_sink_0_0_0_2
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: sent
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [528, 272]
+    rotation: 180
+    state: enabled
+- name: virtual_sink_1
+  id: virtual_sink
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: stats
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [2064, 344]
+    rotation: 0
+    state: disabled
+- name: virtual_source_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: csense
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [528, 560]
+    rotation: 180
+    state: disabled
+- name: virtual_source_0_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: KISS TNC responses.
+    stream_id: tnc_resp
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [24, 320]
+    rotation: 0
+    state: enabled
+- name: virtual_source_0_0_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: recv
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [528, 512]
+    rotation: 180
+    state: disabled
+- name: virtual_source_0_0_0_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: recv
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1376, 1432]
+    rotation: 0
+    state: disabled
+- name: virtual_source_0_0_0_0_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: sent
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1376, 1512]
+    rotation: 0
+    state: disabled
+- name: virtual_source_0_0_0_0_0_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: csense
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1384, 1688]
+    rotation: 0
+    state: disabled
+- name: virtual_source_0_0_0_0_0_1
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: ''
+    stream_id: stats
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1376, 1592]
+    rotation: 0
+    state: disabled
+- name: virtual_source_0_0_1
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: Baseband signal.
+    stream_id: bb
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [48, 908]
+    rotation: 0
+    state: disabled
+- name: virtual_source_0_0_1_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: Baseband signal.
+    stream_id: bb
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1376, 1168]
+    rotation: 0
+    state: disabled
+- name: virtual_source_0_0_1_0_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: SNR.
+    stream_id: snr
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1376, 1248]
+    rotation: 0
+    state: disabled
+- name: virtual_source_0_0_1_0_0_0
+  id: virtual_source
+  parameters:
+    alias: ''
+    comment: Symbols.
+    stream_id: syms
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1376, 1336]
+    rotation: 0
+    state: disabled
+- name: zeromq_pub_msg_sink_0
+  id: zeromq_pub_msg_sink
+  parameters:
+    address: debug_recv_zmqAddr
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    timeout: '10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1640, 1424]
+    rotation: 0
+    state: disabled
+- name: zeromq_pub_msg_sink_0_0
+  id: zeromq_pub_msg_sink
+  parameters:
+    address: debug_sent_zmqAddr
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    timeout: '10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1640, 1504]
+    rotation: 0
+    state: disabled
+- name: zeromq_pub_msg_sink_0_0_0
+  id: zeromq_pub_msg_sink
+  parameters:
+    address: debug_stats_zmqAddr
+    affinity: ''
+    alias: ''
+    bind: 'True'
+    comment: ''
+    timeout: '10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1640, 1584]
+    rotation: 0
+    state: disabled
+- name: zeromq_pub_sink_0
+  id: zeromq_pub_sink
+  parameters:
+    address: debug_bb_zmqAddr
+    affinity: ''
+    alias: ''
+    comment: ''
+    hwm: '-1'
+    pass_tags: 'False'
+    timeout: '10'
+    type: complex
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1640, 1152]
+    rotation: 0
+    state: disabled
+- name: zeromq_pub_sink_0_0
+  id: zeromq_pub_sink
+  parameters:
+    address: debug_snr_zmqAddr
+    affinity: ''
+    alias: ''
+    comment: ''
+    hwm: '-1'
+    pass_tags: 'False'
+    timeout: '10'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1640, 1232]
+    rotation: 0
+    state: disabled
+- name: zeromq_pub_sink_0_0_0
+  id: zeromq_pub_sink
+  parameters:
+    address: debug_syms_zmqAddr
+    affinity: ''
+    alias: ''
+    comment: ''
+    hwm: '-1'
+    pass_tags: 'False'
+    timeout: '10'
+    type: float
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1640, 1320]
+    rotation: 0
+    state: disabled
+- name: zeromq_pub_sink_0_0_0_0
+  id: zeromq_pub_sink
+  parameters:
+    address: debug_cs_zmqAddr
+    affinity: ''
+    alias: ''
+    comment: ''
+    hwm: '-1'
+    pass_tags: 'False'
+    timeout: '10'
+    type: byte
+    vlen: '1'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1640, 1672]
+    rotation: 0
+    state: disabled
+- name: zeromq_sub_msg_source_0
+  id: zeromq_sub_msg_source
+  parameters:
+    address: debug_txCtrl_zmqAddr
+    affinity: ''
+    alias: ''
+    bind: 'False'
+    comment: TX Control.
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    timeout: '10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1416, 492]
+    rotation: 180
+    state: disabled
+- name: zeromq_sub_msg_source_0_0
+  id: zeromq_sub_msg_source
+  parameters:
+    address: debug_rxCtrl_zmqAddr
+    affinity: ''
+    alias: ''
+    bind: 'False'
+    comment: RX Control.
+    maxoutbuf: '0'
+    minoutbuf: '0'
+    timeout: '10'
+  states:
+    bus_sink: false
+    bus_source: false
+    bus_structure: null
+    coordinate: [1376, 780]
+    rotation: 0
+    state: disabled
+
+connections:
+- [AX25_AFSK1200_Modulator_0, '0', blocks_multiply_const_vxx_0, '0']
+- [AX25_AFSK_Demodulator_0, '0', virtual_sink_0_0_0, '0']
+- [AX25_AFSK_Demodulator_0, '0', virtual_sink_0_0_0_0, '0']
+- [AX25_AFSK_Demodulator_0, '1', virtual_sink_0_0_0_0_0, '0']
+- [AX25_AFSK_Demodulator_0, '2', virtual_sink_0_0_0_0_0_0, '0']
+- [amateur_KISS_TNC_0, modem_data, AX25_AFSK1200_Modulator_0, in]
+- [amateur_KISS_TNC_0, modem_data, blocks_message_debug_0, print_pdu]
+- [amateur_KISS_TNC_0, modem_data, virtual_sink_0_0_0_2, '0']
+- [amateur_KISS_TNC_0, tnc_resp, virtual_sink_0_0, '0']
+- [analog_agc2_xx_0, '0', AX25_AFSK_Demodulator_0, '0']
+- [blocks_and_const_xx_0, '0', virtual_sink_0, '0']
+- [blocks_complex_to_arg_0, '0', virtual_sink_0_0_0_1_0, '0']
+- [blocks_complex_to_mag_0, '0', single_pole_iir_filter_xx_0, '0']
+- [blocks_complex_to_mag_0, '0', single_pole_iir_filter_xx_0_0, '0']
+- [blocks_complex_to_mag_0, '0', virtual_sink_0_0_0_1, '0']
+- [blocks_float_to_uchar_0, '0', blocks_and_const_xx_0, '0']
+- [blocks_multiply_const_vxx_0, '0', limesdr_sink_0, '0']
+- [blocks_multiply_const_vxx_0_0, '0', blocks_threshold_ff_0, '0']
+- [blocks_multiply_const_vxx_0_0, '0', virtual_sink_0_0_0_1_1, '0']
+- [blocks_null_source_0, '0', amateur_KISS_TNC_0, cs]
+- [blocks_socket_pdu_0, pdus, amateur_KISS_TNC_0, tnc_req]
+- [blocks_socket_pdu_0, pdus, blocks_message_debug_0_0, print_pdu]
+- [blocks_sub_xx_0, '0', blocks_multiply_const_vxx_0_0, '0']
+- [blocks_threshold_ff_0, '0', blocks_float_to_uchar_0, '0']
+- [blocks_threshold_ff_0, '0', virtual_sink_0_0_0_1_1_0, '0']
+- [blocks_transcendental_0, '0', blocks_sub_xx_0, '0']
+- [blocks_transcendental_0_0, '0', blocks_sub_xx_0, '1']
+- [limesdr_source_0, '0', analog_agc2_xx_0, '0']
+- [single_pole_iir_filter_xx_0, '0', blocks_transcendental_0_0, '0']
+- [single_pole_iir_filter_xx_0_0, '0', blocks_transcendental_0, '0']
+- [virtual_source_0_0, '0', blocks_socket_pdu_0, pdus]
+- [virtual_source_0_0_1, '0', blocks_complex_to_mag_0, '0']
+
+metadata:
+  file_format: 1

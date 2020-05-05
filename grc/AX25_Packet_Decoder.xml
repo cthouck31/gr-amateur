@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<block>
+  <name>AX.25 Packet Decoder</name>
+  <key>amateur_AX25_Packet_Decoder</key>
+  <category>[Amateur]</category>
+  <import>import amateur</import>
+  <make>amateur.AX25_Packet_Decoder()</make>
+
+  <sink>
+    <name>in</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>dict</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>str</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+</block>

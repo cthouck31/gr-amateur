@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<block>
+  <name>KISS TNC</name>
+  <key>amateur_KISS_TNC</key>
+  <category>[Amateur]</category>
+  <import>import amateur</import>
+  <make>amateur.KISS_TNC($bitrate, $numPre, $numPost, $portNum, $csma)</make>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>Bit Rate</name>
+    <key>bitrate</key>
+    <value>1200.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Preamble Count</name>
+    <key>numPre</key>
+    <value>1</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Postamble Count</name>
+    <key>numPost</key>
+    <value>1</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>TNC Port Number</name>
+    <key>portNum</key>
+    <value>0</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>CSMA</name>
+    <key>csma</key>
+    <type>enum</type>
+        <option>
+            <name>Enable</name>
+            <key>1</key>
+        </option>
+        <option>
+            <name>Disable</name>
+            <key>0</key>
+        </option>
+  </param>
+
+  <!-- Make one 'sink' node per input. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>tnc_req</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+  <sink>
+    <name>modem_resp</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+  <sink>
+    <name>cs</name>
+    <type>byte</type>
+    <optional>1</optional>
+  </sink>
+
+  <!-- Make one 'source' node per output. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <source>
+    <name>modem_req</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>modem_data</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>tnc_resp</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+</block>

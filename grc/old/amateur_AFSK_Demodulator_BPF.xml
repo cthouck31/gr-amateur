@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<block>
+  <name>AFSK Demodulator - BPF</name>
+  <key>amateur_AFSK_Demodulator_BPF</key>
+  <category>[Amateur]</category>
+  <import>import amateur</import>
+  <import>import math</import>
+  <make>amateur.AFSK_Demodulator_BPF(Mark=$markFreq, Rs=$symRate, Space=$spaceFreq, Sps=$sps, alpha=$rrcAlpha)</make>
+  <callback>set_alpha($rrcAlpha)</callback>
+  <callback>set_carrier_loop_bw($loopBw)</callback>
+  <callback>set_carrier_max_offset($freqMax)</callback>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>Baud Rate</name>
+    <key>symRate</key>
+    <value>1200.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Mark Frequency</name>
+    <key>markFreq</key>
+    <value>1200.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Space Frequency</name>
+    <key>spaceFreq</key>
+    <value>2200.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Samples per Symbol</name>
+    <key>sps</key>
+    <value>20</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>RRC Alpha</name>
+    <key>rrcAlpha</key>
+    <value>0.5</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>PLL Loop Bandwidth (rads)</name>
+    <key>loopBw</key>
+    <value>2*math.pi/100.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>PLL Maximum Offset</name>
+    <key>freqMax</key>
+    <value>2*math.pi/20.0</value>
+    <type>float</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>complex</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>float</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>syms</name>
+    <type>float</type>
+    <optional>1</optional>
+  </source>
+</block>

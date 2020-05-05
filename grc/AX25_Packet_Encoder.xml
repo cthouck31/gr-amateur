@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<block>
+  <name>AX25 Packet Encoder</name>
+  <key>amateur_AX25_Packet_Encoder</key>
+  <category>[Amateur]</category>
+  <import>import amateur</import>
+  <make>amateur.AX25_Packet_Encoder()</make>
+  <!-- Make one 'sink' node per input. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>data</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+
+  <!-- Make one 'source' node per output. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <source>
+    <name>pkt</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+</block>

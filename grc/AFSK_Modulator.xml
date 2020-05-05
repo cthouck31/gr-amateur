@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<block>
+  <name>AFSK Modulator</name>
+  <key>amateur_Burst_Afsk_Modulator</key>
+  <category>[Amateur]</category>
+  <import>import amateur</import>
+  <make>amateur.Burst_Afsk_Modulator($lengthTag, $symRate, $markFreq, $spaceFreq, $sps, $rrcAlpha, $rrcSyms)</make>
+  <callback>set_alpha($rrcAlpha)</callback>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>Frame Tag</name>
+    <key>lengthTag</key>
+    <value>"packet_len"</value>
+    <type>string</type>
+  </param>
+  <param>
+    <name>Baud Rate</name>
+    <key>symRate</key>
+    <value>1200.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Mark Frequency</name>
+    <key>markFreq</key>
+    <value>2200.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Space Frequency</name>
+    <key>spaceFreq</key>
+    <value>1200.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Samples per Symbol</name>
+    <key>sps</key>
+    <value>16</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>RRC Alpha</name>
+    <key>rrcAlpha</key>
+    <value>0.5</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>RRC Filter Symbols</name>
+    <key>rrcSyms</key>
+    <value>7</value>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>message</type>
+  </sink>
+
+  <source>
+    <name>out</name>
+    <type>float</type>
+  </source>
+</block>

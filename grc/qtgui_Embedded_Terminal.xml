@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<block>
+  <name>QT GUI - Embedded Terminal</name>
+  <key>amateur_qtgui_Embedded_Terminal</key>
+  <category>[Amateur]</category>
+  <import>import amateur</import>
+  <make>#set $win = 'self._%s_win' % $id
+amateur.qtgui_Embedded_Terminal($blacklist)
+self._$(id)_win = self.$(id);
+$(gui_hint()($win))</make>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>Blacklist Commands</name>
+    <key>blacklist</key>
+    <value>["exit", "reboot", "poweroff", "rm .", "rm *", "rm -rf *", "rm -rf ."]</value>
+    <type>raw</type>
+    <hide>part</hide>
+  </param>
+  <param>
+    <name>GUI Hint</name>
+    <key>gui_hint</key>
+    <value></value>
+    <type>gui_hint</type>
+    <hide>part</hide>
+  </param>
+
+</block>

@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<block>
+  <name>AX.25 Packet Formatter</name>
+  <key>amateur_AX25_Packet_Formatter</key>
+  <category>[Amateur]</category>
+  <import>import amateur</import>
+  <make>amateur.AX25_Packet_Formatter(numRevs=$numRevs)</make>
+  <param>
+    <name>Preamble Repeats</name>
+    <key>numRevs</key>
+    <value>10</value>
+    <type>int</type>
+</param>
+
+  <sink>
+    <name>in</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+
+  <!-- Make one 'source' node per output. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <source>
+    <name>out</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+</block>

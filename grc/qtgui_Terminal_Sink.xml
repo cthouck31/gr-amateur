@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<block>
+  <name>QT GUI - Terminal Sink</name>
+  <key>amateur_qtgui_Terminal_Sink</key>
+  <category>[Amateur]</category>
+  <import>import amateur</import>
+  <make>#set $win = 'self._%s_win' % $id
+amateur.qtgui_Terminal_Sink($fontSize, $label, append=$append)
+self._$(id)_win = self.$(id);
+$(gui_hint()($win))</make>
+
+  <param>
+    <name>Font Size</name>
+    <key>fontSize</key>
+    <value>10</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Label</name>
+    <key>label</key>
+    <value>""</value>
+    <type>string</type>
+    <hide>#if $label() then 'none' else 'part'#</hide>
+  </param>
+  <param>
+    <name>Append</name>
+    <key>append</key>
+    <value>True</value>
+    <type>bool</type>
+    <hide>#if (not $append()) then 'none' else 'part'#</hide>
+  </param>
+  <param>
+    <name>GUI Hint</name>
+    <key>gui_hint</key>
+    <value></value>
+    <type>gui_hint</type>
+    <hide>part</hide>
+  </param>
+
+  <sink>
+    <name>pdus</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+
+</block>

@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<block>
+  <name>AX.25 - AFSK Transmitter</name>
+  <key>amateur_AX25_AFSK_Transmitter</key>
+  <category>[Amateur]</category>
+  <import>import amateur</import>
+  <make>amateur.AX25_AFSK_Transmitter(Fs=$sampRate,Rs=$baudRate,Mark=$mark,Space=$space,rrcAlpha=$alpha,rrcSyms=$rrcSyms,frameTag=$frameTag,numPreambles=$numRevs)</make>
+  <callback>set_rrcAlpha($alpha)</callback>
+
+  <param>
+    <name>Sample Rate</name>
+    <key>sampRate</key>
+    <value>8e6</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Baud Rate</name>
+    <key>baudRate</key>
+    <value>1200.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Mark Frequency</name>
+    <key>mark</key>
+    <value>1200.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>Space Frequency</name>
+    <key>space</key>
+    <value>2200.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>RRC Alpha</name>
+    <key>alpha</key>
+    <value>0.5</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>RRC Symbols</name>
+    <key>rrcSyms</key>
+    <value>7</value>
+    <type>int</type>
+  </param>
+  <param>
+    <name>Frame Tag</name>
+    <key>frameTag</key>
+    <value>"packet_len"</value>
+    <type>string</type>
+  </param>
+  <param>
+    <name>Preamble Repeats</name>
+    <key>numRevs</key>
+    <value>10</value>
+    <type>int</type>
+  </param>
+
+  <sink>
+    <name>in</name>
+    <type>message</type>
+    <optional>1</optional>
+  </sink>
+
+  <!-- Make one 'source' node per output. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <source>
+    <name>out</name>
+    <type>complex</type>
+  </source>
+</block>
