@@ -2713,6 +2713,45 @@
     </param>
   </block>
   <block>
+    <key>amateur_Serial_Radio_Controller</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(928, 228)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>amateur_Serial_Radio_Controller_0</value>
+    </param>
+    <param>
+      <key>speed</key>
+      <value>9600</value>
+    </param>
+    <param>
+      <key>device</key>
+      <value>"/dev/ttyACM0"</value>
+    </param>
+  </block>
+  <block>
     <key>analog_agc2_xx</key>
     <param>
       <key>attack_rate</key>
@@ -5397,6 +5436,12 @@
     <sink_block_id>virtual_sink_0_0_0_2</sink_block_id>
     <source_key>modem_data</source_key>
     <sink_key>in</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>amateur_KISS_TNC_0</source_block_id>
+    <sink_block_id>amateur_Serial_Radio_Controller_0</sink_block_id>
+    <source_key>modem_req</source_key>
+    <sink_key>cmd</sink_key>
   </connection>
   <connection>
     <source_block_id>amateur_KISS_TNC_0</source_block_id>

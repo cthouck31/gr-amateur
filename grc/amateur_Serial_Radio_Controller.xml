@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<block>
+  <name>Serial Radio Controller</name>
+  <key>amateur_Serial_Radio_Controller</key>
+  <category>[Amateur]</category>
+  <import>import amateur</import>
+  <make>amateur.Serial_Radio_Controller($device, $speed)</make>
+  <!-- Make one 'param' node for every Parameter you want settable from the GUI.
+       Sub-nodes:
+       * name
+       * key (makes the value accessible as $keyname, e.g. in the make node)
+       * type -->
+  <param>
+    <name>Serial Device</name>
+    <key>device</key>
+    <value>"/dev/ttyACM0"</value>
+    <type>string</type>
+  </param>
+  <param>
+    <name>Serial Baud Rate</name>
+    <key>speed</key>
+    <value>9600</value>
+    <type>int</type>
+    <hide>part</hide>
+  </param>
+
+  <!-- Make one 'sink' node per input. Sub-nodes:
+       * name (an identifier for the GUI)
+       * type
+       * vlen
+       * optional (set to 1 for optional inputs) -->
+  <sink>
+    <name>cmd</name>
+    <type>message</type>
+  </sink>
+
+</block>

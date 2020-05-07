@@ -39,6 +39,7 @@ from KISS_TNC import KISS_TNC
 from qtgui_Terminal_Sink import qtgui_Terminal_Sink
 from qtgui_Embedded_Terminal import qtgui_Embedded_Terminal
 from Message_To_Json import Message_To_Json
+from Serial_Radio_Controller import Serial_Radio_Controller
 
 
 

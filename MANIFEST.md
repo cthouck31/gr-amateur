@@ -31,3 +31,7 @@ that use OOT components. These have to be generated after the OOT module
 has been installed to the system so the 'grcc' command can find the 
 components. Unfortunately GNU Radio has not integrated a seemless
 method for building/managing hierarchical blocks with OOT modules.
+
+Requirements:
+
+pyserial

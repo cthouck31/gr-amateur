@@ -197,6 +197,10 @@ class KISS_TNC(gr.sync_block):
                                       pmt.cons(pmt.intern("gain"), pmt.from_float(0.0)))
 
                 logger.debug("Transmitting packet!")
+                # Enable PA.
+                self.message_port_pub(pmt.intern("modem_req"),
+                                      pmt.cons(pmt.intern("pa"),
+                                               pmt.from_long(1)))
                 # Delay for TX delay.
                 time.sleep(self.txDelay*1e-3)
 
@@ -209,6 +213,10 @@ class KISS_TNC(gr.sync_block):
                 # This is the best approximation as there is no back pressure.
                 logger.debug("Sending burst ({:1f} msec)...".format(burstTime*1e3))
                 time.sleep(burstTime)
+
+                self.message_port_pub(pmt.intern("modem_req"),
+                                      pmt.cons(pmt.intern("pa"),
+                                               pmt.from_long(0)))
 
                 self.message_port_pub(pmt.intern("modem_req"),
                                       pmt.cons(pmt.intern("gain"), pmt.from_float(40.0)))

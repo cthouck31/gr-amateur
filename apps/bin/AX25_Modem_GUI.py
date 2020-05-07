@@ -5,7 +5,7 @@
 # Title: AX.25 - AFSK1200 Modem GUI
 # Author: cthouck31
 # Description: GUI for the AX.25 - AFSK1200 Modem application.
-# Generated: Wed May  6 21:47:47 2020
+# Generated: Thu May  7 01:02:52 2020
 ##################################################
 
 from distutils.version import StrictVersion

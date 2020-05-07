@@ -33,5 +33,5 @@ install(FILES
     qtgui_Terminal_Sink.xml
     qtgui_Embedded_Terminal.xml
     Message_To_Json.xml
-    DESTINATION share/gnuradio/grc/blocks
+    amateur_Serial_Radio_Controller.xml DESTINATION share/gnuradio/grc/blocks
 )

@@ -41,7 +41,7 @@ GR_PYTHON_INSTALL(
     qtgui_Terminal_Sink.py
     qtgui_Embedded_Terminal.py
     Message_To_Json.py
-    DESTINATION ${GR_PYTHON_DIR}/amateur
+    Serial_Radio_Controller.py DESTINATION ${GR_PYTHON_DIR}/amateur
 )
 
 ########################################################################
@@ -51,3 +51,4 @@ include(GrTest)
 
 set(GR_TEST_TARGET_DEPS gnuradio-amateur)
 set(GR_TEST_PYTHON_DIRS ${CMAKE_BINARY_DIR}/swig)
+GR_ADD_TEST(qa_Serial_Radio_Controller ${PYTHON_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/qa_Serial_Radio_Controller.py)

@@ -5,20 +5,9 @@
 # Title: AX.25 - AFSK1200 Modem
 # Author: cthouck31
 # Description: Modem for communicating via AX.25 w/ AFSK1200 modulation (APRS, etc).
-# Generated: Wed May  6 21:47:52 2020
+# Generated: Thu May  7 01:02:08 2020
 ##################################################
 
-from distutils.version import StrictVersion
-
-if __name__ == '__main__':
-    import ctypes
-    import sys
-    if sys.platform.startswith('linux'):
-        try:
-            x11 = ctypes.cdll.LoadLibrary('libX11.so')
-            x11.XInitThreads()
-        except:
-            print "Warning: failed to XInitThreads()"
 
 import os
 import sys
@@ -26,7 +15,6 @@ sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnura
 
 from AX25_AFSK1200_Modulator import AX25_AFSK1200_Modulator  # grc-generated hier_block
 from AX25_AFSK_Demodulator import AX25_AFSK_Demodulator  # grc-generated hier_block
-from PyQt5 import Qt, QtCore
 from gnuradio import analog
 from gnuradio import blocks
 from gnuradio import eng_notation
@@ -42,38 +30,12 @@ import limesdr
 import logging; logging.basicConfig()
 import math
 import pmt
-from gnuradio import qtgui
 
 
-class AX25_Modem(gr.top_block, Qt.QWidget):
+class AX25_Modem(gr.top_block):
 
     def __init__(self, configFile="~/.config/gr-amateur/AX25_Modem-HackRF-RTLSDR.ini", logLevel="debug"):
         gr.top_block.__init__(self, "AX.25 - AFSK1200 Modem")
-        Qt.QWidget.__init__(self)
-        self.setWindowTitle("AX.25 - AFSK1200 Modem")
-        qtgui.util.check_set_qss()
-        try:
-            self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
-        except:
-            pass
-        self.top_scroll_layout = Qt.QVBoxLayout()
-        self.setLayout(self.top_scroll_layout)
-        self.top_scroll = Qt.QScrollArea()
-        self.top_scroll.setFrameStyle(Qt.QFrame.NoFrame)
-        self.top_scroll_layout.addWidget(self.top_scroll)
-        self.top_scroll.setWidgetResizable(True)
-        self.top_widget = Qt.QWidget()
-        self.top_scroll.setWidget(self.top_widget)
-        self.top_layout = Qt.QVBoxLayout(self.top_widget)
-        self.top_grid_layout = Qt.QGridLayout()
-        self.top_layout.addLayout(self.top_grid_layout)
-
-        self.settings = Qt.QSettings("GNU Radio", "AX25_Modem")
-
-        if StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
-            self.restoreGeometry(self.settings.value("geometry").toByteArray())
-        else:
-            self.restoreGeometry(self.settings.value("geometry", type=QtCore.QByteArray))
 
         ##################################################
         # Parameters
@@ -380,6 +342,7 @@ class AX25_Modem(gr.top_block, Qt.QWidget):
         self.blocks_and_const_xx_0 = blocks.and_const_bb(0x01 if (csma_enable) else 0x00)
         self.analog_agc2_xx_0 = analog.agc2_cc(demod_agcAttack if (demod_agcEnable) else 0.0, demod_agcDecay if (demod_agcEnable) else 0.0, 1.0, 1.0)
         self.analog_agc2_xx_0.set_max_gain(65536)
+        self.amateur_Serial_Radio_Controller_0 = amateur.Serial_Radio_Controller("/dev/ttyACM0", 9600)
         self.amateur_KISS_TNC_0 = amateur.KISS_TNC(afsk_bitRate, ax25_numPreambles, ax25_numPostambles, 0, 1)
         self.AX25_AFSK_Demodulator_0 = AX25_AFSK_Demodulator(
             Fs=rx_fs,
@@ -411,6 +374,7 @@ class AX25_Modem(gr.top_block, Qt.QWidget):
         self.msg_connect((self.AX25_AFSK_Demodulator_0, 'out'), (self.amateur_KISS_TNC_0, 'modem_resp'))
         self.msg_connect((self.AX25_AFSK_Demodulator_0, 'out'), (self.zeromq_pub_msg_sink_0, 'in'))
         self.msg_connect((self.amateur_KISS_TNC_0, 'modem_data'), (self.AX25_AFSK1200_Modulator_0, 'in'))
+        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_req'), (self.amateur_Serial_Radio_Controller_0, 'cmd'))
         self.msg_connect((self.amateur_KISS_TNC_0, 'modem_req'), (self.blocks_message_debug_0, 'print'))
         self.msg_connect((self.amateur_KISS_TNC_0, 'tnc_resp'), (self.blocks_socket_pdu_0, 'pdus'))
         self.msg_connect((self.amateur_KISS_TNC_0, 'modem_req'), (self.limesdr_source_0, 'command'))
@@ -439,11 +403,6 @@ class AX25_Modem(gr.top_block, Qt.QWidget):
         self.connect((self.limesdr_source_0, 0), (self.blocks_rotator_cc_0, 0))
         self.connect((self.single_pole_iir_filter_xx_0, 0), (self.blocks_transcendental_0_0, 0))
         self.connect((self.single_pole_iir_filter_xx_0_0, 0), (self.blocks_transcendental_0, 0))
-
-    def closeEvent(self, event):
-        self.settings = Qt.QSettings("GNU Radio", "AX25_Modem")
-        self.settings.setValue("geometry", self.saveGeometry())
-        event.accept()
 
     def get_configFile(self):
         return self.configFile
@@ -1123,20 +1082,9 @@ def main(top_block_cls=AX25_Modem, options=None):
     if gr.enable_realtime_scheduling() != gr.RT_OK:
         print "Error: failed to enable real-time scheduling."
 
-    if StrictVersion("4.5.0") <= StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
-        style = gr.prefs().get_string('qtgui', 'style', 'raster')
-        Qt.QApplication.setGraphicsSystem(style)
-    qapp = Qt.QApplication(sys.argv)
-
     tb = top_block_cls(configFile=options.configFile, logLevel=options.logLevel)
     tb.start()
-    tb.show()
-
-    def quitting():
-        tb.stop()
-        tb.wait()
-    qapp.aboutToQuit.connect(quitting)
-    qapp.exec_()
+    tb.wait()
 
 
 if __name__ == '__main__':
