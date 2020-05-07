@@ -86,10 +86,10 @@ class KISS_TNC(gr.sync_block):
         Reset TNC to default settings.
         """
         with self.lock:
-            self.txDelay     = 0.0
+            self.txDelay     = 100.0
             self.persistence = 0.25
             self.slotIntvl   = 100.0
-            self.txTail      = 0.0
+            self.txTail      = 500.0
             self.fullDuplex  = False
             self.passthrough = False
             self.carrTimeout = 30.0
@@ -192,6 +192,10 @@ class KISS_TNC(gr.sync_block):
                     time.sleep(self.slotIntvl*1e-3)
                     continue
 
+                logger.debug("Turning down RX gain.")
+                self.message_port_pub(pmt.intern("modem_req"),
+                                      pmt.cons(pmt.intern("gain"), pmt.from_float(0.0)))
+
                 logger.debug("Transmitting packet!")
                 # Delay for TX delay.
                 time.sleep(self.txDelay*1e-3)
@@ -203,7 +207,11 @@ class KISS_TNC(gr.sync_block):
 
                 # Delay for theoretical burst time plus TX tail.
                 # This is the best approximation as there is no back pressure.
+                logger.debug("Sending burst ({:1f} msec)...".format(burstTime*1e3))
                 time.sleep(burstTime)
+
+                self.message_port_pub(pmt.intern("modem_req"),
+                                      pmt.cons(pmt.intern("gain"), pmt.from_float(40.0)))
 
                 break
 

@@ -5,7 +5,7 @@
 # Title: AX.25 - AFSK1200 Modem GUI
 # Author: cthouck31
 # Description: GUI for the AX.25 - AFSK1200 Modem application.
-# Generated: Tue May  5 13:01:10 2020
+# Generated: Wed May  6 21:47:47 2020
 ##################################################
 
 from distutils.version import StrictVersion
@@ -245,7 +245,7 @@ class AX25_Modem_GUI(gr.top_block, Qt.QWidget):
         	"", #name
                 1 #number of inputs
         )
-        self.qtgui_waterfall_sink_x_0.set_update_time(0.10)
+        self.qtgui_waterfall_sink_x_0.set_update_time(0.025)
         self.qtgui_waterfall_sink_x_0.enable_grid(False)
         self.qtgui_waterfall_sink_x_0.enable_axis_labels(True)
 
@@ -416,7 +416,7 @@ class AX25_Modem_GUI(gr.top_block, Qt.QWidget):
         	"Spectrum", #name
         	1 #number of inputs
         )
-        self.qtgui_freq_sink_x_0.set_update_time(0.05)
+        self.qtgui_freq_sink_x_0.set_update_time(0.1)
         self.qtgui_freq_sink_x_0.set_y_axis(-100, 0)
         self.qtgui_freq_sink_x_0.set_y_label("", "dB")
         self.qtgui_freq_sink_x_0.set_trigger_mode(qtgui.TRIG_MODE_FREE, 0.0, 0, "")
@@ -453,6 +453,16 @@ class AX25_Modem_GUI(gr.top_block, Qt.QWidget):
         self.plotTab_grid_layout_0.addWidget(self._qtgui_freq_sink_x_0_win, 0, 0, 3, 8)
         [self.plotTab_grid_layout_0.setRowStretch(r,1) for r in range(0,3)]
         [self.plotTab_grid_layout_0.setColumnStretch(c,1) for c in range(0,8)]
+        self.qtgui_edit_box_msg_0_1 = qtgui.edit_box_msg(qtgui.FLOAT, '', "TX - Gain", True, True, "gain")
+        self._qtgui_edit_box_msg_0_1_win = sip.wrapinstance(self.qtgui_edit_box_msg_0_1.pyqwidget(), Qt.QWidget)
+        self.ctrlTab_grid_layout_0.addWidget(self._qtgui_edit_box_msg_0_1_win, 2, 0, 1, 1)
+        [self.ctrlTab_grid_layout_0.setRowStretch(r,1) for r in range(2,3)]
+        [self.ctrlTab_grid_layout_0.setColumnStretch(c,1) for c in range(0,1)]
+        self.qtgui_edit_box_msg_0_0_0 = qtgui.edit_box_msg(qtgui.FLOAT, '', "RX - Gain", True, True, "gain")
+        self._qtgui_edit_box_msg_0_0_0_win = sip.wrapinstance(self.qtgui_edit_box_msg_0_0_0.pyqwidget(), Qt.QWidget)
+        self.ctrlTab_grid_layout_0.addWidget(self._qtgui_edit_box_msg_0_0_0_win, 3, 0, 1, 1)
+        [self.ctrlTab_grid_layout_0.setRowStretch(r,1) for r in range(3,4)]
+        [self.ctrlTab_grid_layout_0.setColumnStretch(c,1) for c in range(0,1)]
         self.qtgui_edit_box_msg_0_0 = qtgui.edit_box_msg(qtgui.FLOAT, '', "RX - Frequency", True, True, "freq")
         self._qtgui_edit_box_msg_0_0_win = sip.wrapinstance(self.qtgui_edit_box_msg_0_0.pyqwidget(), Qt.QWidget)
         self.ctrlTab_grid_layout_0.addWidget(self._qtgui_edit_box_msg_0_0_win, 1, 0, 1, 1)
@@ -464,28 +474,18 @@ class AX25_Modem_GUI(gr.top_block, Qt.QWidget):
         [self.ctrlTab_grid_layout_0.setRowStretch(r,1) for r in range(0,1)]
         [self.ctrlTab_grid_layout_0.setColumnStretch(c,1) for c in range(0,1)]
         self.blocks_uchar_to_float_0 = blocks.uchar_to_float()
-        self.amateur_qtgui_Terminal_Sink_1_0 = Template error: #set $win = 'self._%s_win' % $id
-        amateur.qtgui_Terminal_Sink($fontSize, $label, append=$append)
-        self._$(id)_win = self.$(id);
-        $(gui_hint()($win))
-            'str' object is not callable
-        self.amateur_qtgui_Terminal_Sink_1 = Template error: #set $win = 'self._%s_win' % $id
-        amateur.qtgui_Terminal_Sink($fontSize, $label, append=$append)
-        self._$(id)_win = self.$(id);
-        $(gui_hint()($win))
-            'str' object is not callable
         self.amateur_AX25_Packet_Decoder_0_0 = amateur.AX25_Packet_Decoder()
         self.amateur_AX25_Packet_Decoder_0 = amateur.AX25_Packet_Decoder()
 
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.amateur_AX25_Packet_Decoder_0, 'str'), (self.amateur_qtgui_Terminal_Sink_1, 'pdus'))
-        self.msg_connect((self.amateur_AX25_Packet_Decoder_0_0, 'str'), (self.amateur_qtgui_Terminal_Sink_1_0, 'pdus'))
         self.msg_connect((self.qtgui_edit_box_msg_0, 'msg'), (self.zeromq_pub_msg_sink_0_0_0, 'in'))
+        self.msg_connect((self.qtgui_edit_box_msg_0_0, 'msg'), (self.qtgui_freq_sink_x_0, 'freq'))
         self.msg_connect((self.qtgui_edit_box_msg_0_0, 'msg'), (self.qtgui_waterfall_sink_x_0, 'freq'))
         self.msg_connect((self.qtgui_edit_box_msg_0_0, 'msg'), (self.zeromq_pub_msg_sink_0_0_0_0, 'in'))
-        self.msg_connect((self.qtgui_waterfall_sink_x_0, 'freq'), (self.qtgui_freq_sink_x_0, 'freq'))
+        self.msg_connect((self.qtgui_edit_box_msg_0_0_0, 'msg'), (self.zeromq_pub_msg_sink_0_0_0_0, 'in'))
+        self.msg_connect((self.qtgui_edit_box_msg_0_1, 'msg'), (self.zeromq_pub_msg_sink_0_0_0, 'in'))
         self.msg_connect((self.zeromq_sub_msg_source_0, 'out'), (self.amateur_AX25_Packet_Decoder_0, 'in'))
         self.msg_connect((self.zeromq_sub_msg_source_0_0, 'out'), (self.amateur_AX25_Packet_Decoder_0_0, 'in'))
         self.connect((self.blocks_uchar_to_float_0, 0), (self.qtgui_number_sink_0_0, 1))

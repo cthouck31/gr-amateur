@@ -986,6 +986,53 @@
     </param>
     <param>
       <key>value</key>
+      <value>"tcp://127.0.0.1:18738"</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1064, 2780)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>debug_rxCtrl_zmqAddr</value>
+    </param>
+    <param>
+      <key>option</key>
+      <value>rxCtrl_zmqAddr</value>
+    </param>
+    <param>
+      <key>section</key>
+      <value>Debug</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>string</value>
+    </param>
+    <param>
+      <key>writeback</key>
+      <value>None</value>
+    </param>
+  </block>
+  <block>
+    <key>variable_config</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>config_file</key>
+      <value>configFile</value>
+    </param>
+    <param>
+      <key>value</key>
       <value>"tcp://127.0.0.1:18734"</value>
     </param>
     <param>
@@ -1148,6 +1195,53 @@
     <param>
       <key>option</key>
       <value>syms_zmqAddr</value>
+    </param>
+    <param>
+      <key>section</key>
+      <value>Debug</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>string</value>
+    </param>
+    <param>
+      <key>writeback</key>
+      <value>None</value>
+    </param>
+  </block>
+  <block>
+    <key>variable_config</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>config_file</key>
+      <value>configFile</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>"tcp://127.0.0.1:18737"</value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>1</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1064, 2636)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>debug_txCtrl_zmqAddr</value>
+    </param>
+    <param>
+      <key>option</key>
+      <value>txCtrl_zmqAddr</value>
     </param>
     <param>
       <key>section</key>
@@ -1409,6 +1503,33 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(1584, 780)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>f_nco</value>
+    </param>
+    <param>
+      <key>value</key>
+      <value>rx_fs/4.0</value>
+    </param>
+  </block>
+  <block>
+    <key>variable</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(424, 20)</value>
     </param>
     <param>
@@ -1651,7 +1772,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>144.390e6</value>
+      <value>144.39e6</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1698,7 +1819,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>2e6</value>
+      <value>30.72e6/16</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1839,7 +1960,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>45.0</value>
+      <value>30</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -1886,7 +2007,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1824, 524)</value>
+      <value>(1912, 460)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -1940,7 +2061,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1824, 460)</value>
+      <value>(1912, 396)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2155,7 +2276,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>144.390e6</value>
+      <value>144.39e6</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -2202,7 +2323,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>2e6</value>
+      <value>30.72e6/16</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -2619,7 +2740,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1192, 612)</value>
+      <value>(1184, 612)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -2842,7 +2963,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>0</value>
+      <value>1</value>
     </param>
     <param>
       <key>_coordinate</key>
@@ -3015,6 +3136,49 @@
     <param>
       <key>vlen</key>
       <value>1</value>
+    </param>
+  </block>
+  <block>
+    <key>blocks_rotator_cc</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1608, 644)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>blocks_rotator_cc_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>phase_inc</key>
+      <value>-2*math.pi*f_nco/rx_fs</value>
     </param>
   </block>
   <block>
@@ -3316,6 +3480,57 @@
     </param>
   </block>
   <block>
+    <key>dc_blocker_xx</key>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>2</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1408, 636)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>dc_blocker_xx_0</value>
+    </param>
+    <param>
+      <key>length</key>
+      <value>1024</value>
+    </param>
+    <param>
+      <key>long_form</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>type</key>
+      <value>cc</value>
+    </param>
+  </block>
+  <block>
     <key>import</key>
     <param>
       <key>alias</key>
@@ -3472,7 +3687,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1416, 252)</value>
+      <value>(1440, 268)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3583,7 +3798,7 @@
     </param>
     <param>
       <key>_coordinate</key>
-      <value>(1480, 564)</value>
+      <value>(1824, 556)</value>
     </param>
     <param>
       <key>_rotation</key>
@@ -3591,7 +3806,7 @@
     </param>
     <param>
       <key>gain_dB_ch0</key>
-      <value>tx_rfGain</value>
+      <value>rx_rfGain</value>
     </param>
     <param>
       <key>gain_dB_ch1</key>
@@ -3619,7 +3834,7 @@
     </param>
     <param>
       <key>nco_freq_ch0</key>
-      <value>0</value>
+      <value>f_nco</value>
     </param>
     <param>
       <key>nco_freq_ch1</key>
@@ -4344,6 +4559,33 @@
     </param>
     <param>
       <key>_coordinate</key>
+      <value>(528, 220)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_sink_0_0_1</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>modem_req</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_sink</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
       <value>(2064, 340)</value>
     </param>
     <param>
@@ -4546,6 +4788,33 @@
     <param>
       <key>stream_id</key>
       <value>stats</value>
+    </param>
+  </block>
+  <block>
+    <key>virtual_source</key>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(2064, 700)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>virtual_source_0_0_0_1</value>
+    </param>
+    <param>
+      <key>stream_id</key>
+      <value>modem_req</value>
     </param>
   </block>
   <block>
@@ -4993,6 +5262,100 @@
       <value>1</value>
     </param>
   </block>
+  <block>
+    <key>zeromq_sub_msg_source</key>
+    <param>
+      <key>address</key>
+      <value>debug_txCtrl_zmqAddr</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(1184, 372)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>zeromq_sub_msg_source_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>timeout</key>
+      <value>10</value>
+    </param>
+  </block>
+  <block>
+    <key>zeromq_sub_msg_source</key>
+    <param>
+      <key>address</key>
+      <value>debug_rxCtrl_zmqAddr</value>
+    </param>
+    <param>
+      <key>alias</key>
+      <value></value>
+    </param>
+    <param>
+      <key>comment</key>
+      <value></value>
+    </param>
+    <param>
+      <key>affinity</key>
+      <value></value>
+    </param>
+    <param>
+      <key>_enabled</key>
+      <value>True</value>
+    </param>
+    <param>
+      <key>_coordinate</key>
+      <value>(2064, 636)</value>
+    </param>
+    <param>
+      <key>_rotation</key>
+      <value>180</value>
+    </param>
+    <param>
+      <key>id</key>
+      <value>zeromq_sub_msg_source_0_0</value>
+    </param>
+    <param>
+      <key>maxoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>minoutbuf</key>
+      <value>0</value>
+    </param>
+    <param>
+      <key>timeout</key>
+      <value>10</value>
+    </param>
+  </block>
   <connection>
     <source_block_id>AX25_AFSK1200_Modulator_0</source_block_id>
     <sink_block_id>limesdr_sink_0</sink_block_id>
@@ -5031,12 +5394,6 @@
   </connection>
   <connection>
     <source_block_id>amateur_KISS_TNC_0</source_block_id>
-    <sink_block_id>blocks_message_debug_0</sink_block_id>
-    <source_key>modem_data</source_key>
-    <sink_key>print_pdu</sink_key>
-  </connection>
-  <connection>
-    <source_block_id>amateur_KISS_TNC_0</source_block_id>
     <sink_block_id>virtual_sink_0_0_0_2</sink_block_id>
     <source_key>modem_data</source_key>
     <sink_key>in</sink_key>
@@ -5046,6 +5403,12 @@
     <sink_block_id>blocks_message_debug_0</sink_block_id>
     <source_key>modem_req</source_key>
     <sink_key>print</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>amateur_KISS_TNC_0</source_block_id>
+    <sink_block_id>virtual_sink_0_0_1</sink_block_id>
+    <source_key>modem_req</source_key>
+    <sink_key>in</sink_key>
   </connection>
   <connection>
     <source_block_id>amateur_KISS_TNC_0</source_block_id>
@@ -5114,6 +5477,12 @@
     <sink_key>0</sink_key>
   </connection>
   <connection>
+    <source_block_id>blocks_rotator_cc_0</source_block_id>
+    <sink_block_id>dc_blocker_xx_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
     <source_block_id>blocks_socket_pdu_0</source_block_id>
     <sink_block_id>amateur_KISS_TNC_0</sink_block_id>
     <source_key>pdus</source_key>
@@ -5156,8 +5525,14 @@
     <sink_key>1</sink_key>
   </connection>
   <connection>
-    <source_block_id>limesdr_source_0</source_block_id>
+    <source_block_id>dc_blocker_xx_0</source_block_id>
     <sink_block_id>analog_agc2_xx_0</sink_block_id>
+    <source_key>0</source_key>
+    <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>limesdr_source_0</source_block_id>
+    <sink_block_id>blocks_rotator_cc_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
   </connection>
@@ -5222,6 +5597,12 @@
     <sink_key>in</sink_key>
   </connection>
   <connection>
+    <source_block_id>virtual_source_0_0_0_1</source_block_id>
+    <sink_block_id>limesdr_source_0</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>command</sink_key>
+  </connection>
+  <connection>
     <source_block_id>virtual_source_0_0_1</source_block_id>
     <sink_block_id>blocks_complex_to_arg_0</sink_block_id>
     <source_key>0</source_key>
@@ -5250,5 +5631,17 @@
     <sink_block_id>zeromq_pub_sink_0_0_0</sink_block_id>
     <source_key>0</source_key>
     <sink_key>0</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>zeromq_sub_msg_source_0</source_block_id>
+    <sink_block_id>limesdr_sink_0</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>command</sink_key>
+  </connection>
+  <connection>
+    <source_block_id>zeromq_sub_msg_source_0_0</source_block_id>
+    <sink_block_id>limesdr_source_0</sink_block_id>
+    <source_key>out</source_key>
+    <sink_key>command</sink_key>
   </connection>
 </flow_graph>

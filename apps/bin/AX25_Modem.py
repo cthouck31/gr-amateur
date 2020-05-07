@@ -5,9 +5,20 @@
 # Title: AX.25 - AFSK1200 Modem
 # Author: cthouck31
 # Description: Modem for communicating via AX.25 w/ AFSK1200 modulation (APRS, etc).
-# Generated: Tue May  5 13:48:31 2020
+# Generated: Wed May  6 21:47:52 2020
 ##################################################
 
+from distutils.version import StrictVersion
+
+if __name__ == '__main__':
+    import ctypes
+    import sys
+    if sys.platform.startswith('linux'):
+        try:
+            x11 = ctypes.cdll.LoadLibrary('libX11.so')
+            x11.XInitThreads()
+        except:
+            print "Warning: failed to XInitThreads()"
 
 import os
 import sys
@@ -15,6 +26,7 @@ sys.path.append(os.environ.get('GRC_HIER_PATH', os.path.expanduser('~/.grc_gnura
 
 from AX25_AFSK1200_Modulator import AX25_AFSK1200_Modulator  # grc-generated hier_block
 from AX25_AFSK_Demodulator import AX25_AFSK_Demodulator  # grc-generated hier_block
+from PyQt5 import Qt, QtCore
 from gnuradio import analog
 from gnuradio import blocks
 from gnuradio import eng_notation
@@ -30,12 +42,38 @@ import limesdr
 import logging; logging.basicConfig()
 import math
 import pmt
+from gnuradio import qtgui
 
 
-class AX25_Modem(gr.top_block):
+class AX25_Modem(gr.top_block, Qt.QWidget):
 
     def __init__(self, configFile="~/.config/gr-amateur/AX25_Modem-HackRF-RTLSDR.ini", logLevel="debug"):
         gr.top_block.__init__(self, "AX.25 - AFSK1200 Modem")
+        Qt.QWidget.__init__(self)
+        self.setWindowTitle("AX.25 - AFSK1200 Modem")
+        qtgui.util.check_set_qss()
+        try:
+            self.setWindowIcon(Qt.QIcon.fromTheme('gnuradio-grc'))
+        except:
+            pass
+        self.top_scroll_layout = Qt.QVBoxLayout()
+        self.setLayout(self.top_scroll_layout)
+        self.top_scroll = Qt.QScrollArea()
+        self.top_scroll.setFrameStyle(Qt.QFrame.NoFrame)
+        self.top_scroll_layout.addWidget(self.top_scroll)
+        self.top_scroll.setWidgetResizable(True)
+        self.top_widget = Qt.QWidget()
+        self.top_scroll.setWidget(self.top_widget)
+        self.top_layout = Qt.QVBoxLayout(self.top_widget)
+        self.top_grid_layout = Qt.QGridLayout()
+        self.top_layout.addLayout(self.top_grid_layout)
+
+        self.settings = Qt.QSettings("GNU Radio", "AX25_Modem")
+
+        if StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
+            self.restoreGeometry(self.settings.value("geometry").toByteArray())
+        else:
+            self.restoreGeometry(self.settings.value("geometry", type=QtCore.QByteArray))
 
         ##################################################
         # Parameters
@@ -50,9 +88,14 @@ class AX25_Modem(gr.top_block):
         self._rx_freq_config = ConfigParser.ConfigParser()
         self._rx_freq_config.read(configFile)
         try: rx_freq = self._rx_freq_config.getfloat('Receive', 'freq')
-        except: rx_freq = 144.390e6
+        except: rx_freq = 144.39e6
         self.rx_freq = rx_freq
         self.settings_1 = settings_1 = pmt.dict_add(settings_0, pmt.intern("rx_freq"), pmt.from_float(rx_freq))
+        self._rx_fs_config = ConfigParser.ConfigParser()
+        self._rx_fs_config.read(configFile)
+        try: rx_fs = self._rx_fs_config.getfloat('Receive', 'fs')
+        except: rx_fs = 30.72e6/16
+        self.rx_fs = rx_fs
         self.logLvl = logLvl = {"info": logging.INFO, "debug": logging.DEBUG, "warning": logging.WARNING, "warn": logging.WARN, "error": logging.ERROR}.get(logLevel.lower(), logging.INFO)
         self._tx_rfGain_config = ConfigParser.ConfigParser()
         self._tx_rfGain_config.read(configFile)
@@ -72,12 +115,12 @@ class AX25_Modem(gr.top_block):
         self._tx_fs_config = ConfigParser.ConfigParser()
         self._tx_fs_config.read(configFile)
         try: tx_fs = self._tx_fs_config.getfloat('Transmit', 'fs')
-        except: tx_fs = 2e6
+        except: tx_fs = 30.72e6/16
         self.tx_fs = tx_fs
         self._tx_freq_config = ConfigParser.ConfigParser()
         self._tx_freq_config.read(configFile)
         try: tx_freq = self._tx_freq_config.getfloat('Transmit', 'freq')
-        except: tx_freq = 144.390e6
+        except: tx_freq = 144.39e6
         self.tx_freq = tx_freq
         self._tx_deviceArgs_config = ConfigParser.ConfigParser()
         self._tx_deviceArgs_config.read(configFile)
@@ -103,7 +146,7 @@ class AX25_Modem(gr.top_block):
         self._rx_rfGain_config = ConfigParser.ConfigParser()
         self._rx_rfGain_config.read(configFile)
         try: rx_rfGain = self._rx_rfGain_config.getfloat('Receive', 'rfGain')
-        except: rx_rfGain = 45.0
+        except: rx_rfGain = 30
         self.rx_rfGain = rx_rfGain
         self._rx_ppm_config = ConfigParser.ConfigParser()
         self._rx_ppm_config.read(configFile)
@@ -115,11 +158,6 @@ class AX25_Modem(gr.top_block):
         try: rx_ifGain = self._rx_ifGain_config.getfloat('Receive', 'ifGain')
         except: rx_ifGain = 0
         self.rx_ifGain = rx_ifGain
-        self._rx_fs_config = ConfigParser.ConfigParser()
-        self._rx_fs_config.read(configFile)
-        try: rx_fs = self._rx_fs_config.getfloat('Receive', 'fs')
-        except: rx_fs = 2e6
-        self.rx_fs = rx_fs
         self._rx_deviceArgs_config = ConfigParser.ConfigParser()
         self._rx_deviceArgs_config.read(configFile)
         try: rx_deviceArgs = self._rx_deviceArgs_config.get('Receive', 'deviceArgs')
@@ -141,6 +179,7 @@ class AX25_Modem(gr.top_block):
         except: rx_ant = "RX"
         self.rx_ant = rx_ant
         self.rootLogger = rootLogger = amateur.setupLogging(level=logLvl)
+        self.f_nco = f_nco = rx_fs/4.0
         self._demod_pllLoopBw_config = ConfigParser.ConfigParser()
         self._demod_pllLoopBw_config.read(configFile)
         try: demod_pllLoopBw = self._demod_pllLoopBw_config.getfloat('Demod', 'pllLoopBw')
@@ -166,6 +205,11 @@ class AX25_Modem(gr.top_block):
         try: demod_agcAttack = self._demod_agcAttack_config.getfloat('Demod', 'agcAttack')
         except: demod_agcAttack = 0.1
         self.demod_agcAttack = demod_agcAttack
+        self._debug_txCtrl_zmqAddr_config = ConfigParser.ConfigParser()
+        self._debug_txCtrl_zmqAddr_config.read(configFile)
+        try: debug_txCtrl_zmqAddr = self._debug_txCtrl_zmqAddr_config.get('Debug', 'txCtrl_zmqAddr')
+        except: debug_txCtrl_zmqAddr = "tcp://127.0.0.1:18737"
+        self.debug_txCtrl_zmqAddr = debug_txCtrl_zmqAddr
         self._debug_syms_zmqAddr_config = ConfigParser.ConfigParser()
         self._debug_syms_zmqAddr_config.read(configFile)
         try: debug_syms_zmqAddr = self._debug_syms_zmqAddr_config.get('Debug', 'syms_zmqAddr')
@@ -186,6 +230,11 @@ class AX25_Modem(gr.top_block):
         try: debug_sent_zmqAddr = self._debug_sent_zmqAddr_config.get('Debug', 'sent_zmqAddr')
         except: debug_sent_zmqAddr = "tcp://127.0.0.1:18734"
         self.debug_sent_zmqAddr = debug_sent_zmqAddr
+        self._debug_rxCtrl_zmqAddr_config = ConfigParser.ConfigParser()
+        self._debug_rxCtrl_zmqAddr_config.read(configFile)
+        try: debug_rxCtrl_zmqAddr = self._debug_rxCtrl_zmqAddr_config.get('Debug', 'rxCtrl_zmqAddr')
+        except: debug_rxCtrl_zmqAddr = "tcp://127.0.0.1:18738"
+        self.debug_rxCtrl_zmqAddr = debug_rxCtrl_zmqAddr
         self._debug_recv_zmqAddr_config = ConfigParser.ConfigParser()
         self._debug_recv_zmqAddr_config.read(configFile)
         try: debug_recv_zmqAddr = self._debug_recv_zmqAddr_config.get('Debug', 'recv_zmqAddr')
@@ -285,6 +334,8 @@ class AX25_Modem(gr.top_block):
         ##################################################
         # Blocks
         ##################################################
+        self.zeromq_sub_msg_source_0_0 = zeromq.sub_msg_source(debug_rxCtrl_zmqAddr, 10)
+        self.zeromq_sub_msg_source_0 = zeromq.sub_msg_source(debug_txCtrl_zmqAddr, 10)
         self.zeromq_pub_sink_0_0_0_0 = zeromq.pub_sink(gr.sizeof_char, 1, debug_cs_zmqAddr, 10, False, -1)
         self.zeromq_pub_sink_0_0_0 = zeromq.pub_sink(gr.sizeof_float, 1, debug_syms_zmqAddr, 10, False, -1)
         self.zeromq_pub_sink_0_0 = zeromq.pub_sink(gr.sizeof_float, 1, debug_snr_zmqAddr, 10, False, -1)
@@ -299,9 +350,10 @@ class AX25_Modem(gr.top_block):
         self.limesdr_source_0.set_center_freq(rx_freq, 0)
         self.limesdr_source_0.set_bandwidth(1.5e6,0)
         self.limesdr_source_0.set_digital_filter(30.72e6/(2**4),0)
-        self.limesdr_source_0.set_gain(tx_rfGain,0)
+        self.limesdr_source_0.set_gain(rx_rfGain,0)
         self.limesdr_source_0.set_antenna(255,0)
         self.limesdr_source_0.calibrate(2.5e6, 0)
+        self.limesdr_source_0.set_nco(f_nco,0)
         self.limesdr_source_0.set_tcxo_dac(125)
 
         self.limesdr_sink_0 = limesdr.sink('', 0, '', '')
@@ -319,8 +371,10 @@ class AX25_Modem(gr.top_block):
         self.blocks_threshold_ff_0 = blocks.threshold_ff(csma_snrThreshold, csma_snrThreshold, 0)
         self.blocks_sub_xx_0 = blocks.sub_ff(1)
         self.blocks_socket_pdu_0 = blocks.socket_pdu("TCP_CLIENT", ax25_ipAddr, ax25_ipPort, ax25_mtu, False)
+        self.blocks_rotator_cc_0 = blocks.rotator_cc(-2*math.pi*f_nco/rx_fs)
         self.blocks_multiply_const_vxx_0_0 = blocks.multiply_const_vff((20.0/math.log(10), ))
         self.blocks_message_strobe_0 = blocks.message_strobe(settings, 250)
+        self.blocks_message_debug_0 = blocks.message_debug()
         self.blocks_float_to_uchar_0 = blocks.float_to_uchar()
         self.blocks_complex_to_mag_0 = blocks.complex_to_mag(1)
         self.blocks_and_const_xx_0 = blocks.and_const_bb(0x01 if (csma_enable) else 0x00)
@@ -357,10 +411,14 @@ class AX25_Modem(gr.top_block):
         self.msg_connect((self.AX25_AFSK_Demodulator_0, 'out'), (self.amateur_KISS_TNC_0, 'modem_resp'))
         self.msg_connect((self.AX25_AFSK_Demodulator_0, 'out'), (self.zeromq_pub_msg_sink_0, 'in'))
         self.msg_connect((self.amateur_KISS_TNC_0, 'modem_data'), (self.AX25_AFSK1200_Modulator_0, 'in'))
+        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_req'), (self.blocks_message_debug_0, 'print'))
         self.msg_connect((self.amateur_KISS_TNC_0, 'tnc_resp'), (self.blocks_socket_pdu_0, 'pdus'))
+        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_req'), (self.limesdr_source_0, 'command'))
         self.msg_connect((self.amateur_KISS_TNC_0, 'modem_data'), (self.zeromq_pub_msg_sink_0_0, 'in'))
         self.msg_connect((self.blocks_message_strobe_0, 'strobe'), (self.zeromq_pub_msg_sink_0_0_0, 'in'))
         self.msg_connect((self.blocks_socket_pdu_0, 'pdus'), (self.amateur_KISS_TNC_0, 'tnc_req'))
+        self.msg_connect((self.zeromq_sub_msg_source_0, 'out'), (self.limesdr_sink_0, 'command'))
+        self.msg_connect((self.zeromq_sub_msg_source_0_0, 'out'), (self.limesdr_source_0, 'command'))
         self.connect((self.AX25_AFSK1200_Modulator_0, 0), (self.limesdr_sink_0, 0))
         self.connect((self.AX25_AFSK_Demodulator_0, 2), (self.blocks_complex_to_mag_0, 0))
         self.connect((self.AX25_AFSK_Demodulator_0, 2), (self.zeromq_pub_sink_0, 0))
@@ -373,13 +431,19 @@ class AX25_Modem(gr.top_block):
         self.connect((self.blocks_float_to_uchar_0, 0), (self.blocks_and_const_xx_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0_0, 0), (self.blocks_threshold_ff_0, 0))
         self.connect((self.blocks_multiply_const_vxx_0_0, 0), (self.zeromq_pub_sink_0_0, 0))
+        self.connect((self.blocks_rotator_cc_0, 0), (self.analog_agc2_xx_0, 0))
         self.connect((self.blocks_sub_xx_0, 0), (self.blocks_multiply_const_vxx_0_0, 0))
         self.connect((self.blocks_threshold_ff_0, 0), (self.blocks_float_to_uchar_0, 0))
         self.connect((self.blocks_transcendental_0, 0), (self.blocks_sub_xx_0, 0))
         self.connect((self.blocks_transcendental_0_0, 0), (self.blocks_sub_xx_0, 1))
-        self.connect((self.limesdr_source_0, 0), (self.analog_agc2_xx_0, 0))
+        self.connect((self.limesdr_source_0, 0), (self.blocks_rotator_cc_0, 0))
         self.connect((self.single_pole_iir_filter_xx_0, 0), (self.blocks_transcendental_0_0, 0))
         self.connect((self.single_pole_iir_filter_xx_0_0, 0), (self.blocks_transcendental_0, 0))
+
+    def closeEvent(self, event):
+        self.settings = Qt.QSettings("GNU Radio", "AX25_Modem")
+        self.settings.setValue("geometry", self.saveGeometry())
+        event.accept()
 
     def get_configFile(self):
         return self.configFile
@@ -404,6 +468,12 @@ class AX25_Modem(gr.top_block):
         	self._tx_freq_config.add_section('Transmit')
         self._tx_freq_config.set('Transmit', 'freq', str(None))
         self._tx_freq_config.write(open(self.configFile, 'w'))
+        self._rx_rfGain_config = ConfigParser.ConfigParser()
+        self._rx_rfGain_config.read(self.configFile)
+        if not self._rx_rfGain_config.has_section('Receive'):
+        	self._rx_rfGain_config.add_section('Receive')
+        self._rx_rfGain_config.set('Receive', 'rfGain', str(None))
+        self._rx_rfGain_config.write(open(self.configFile, 'w'))
         self._rx_fs_config = ConfigParser.ConfigParser()
         self._rx_fs_config.read(self.configFile)
         if not self._rx_fs_config.has_section('Receive'):
@@ -446,6 +516,12 @@ class AX25_Modem(gr.top_block):
         	self._demod_agcAttack_config.add_section('Demod')
         self._demod_agcAttack_config.set('Demod', 'agcAttack', str(None))
         self._demod_agcAttack_config.write(open(self.configFile, 'w'))
+        self._debug_txCtrl_zmqAddr_config = ConfigParser.ConfigParser()
+        self._debug_txCtrl_zmqAddr_config.read(self.configFile)
+        if not self._debug_txCtrl_zmqAddr_config.has_section('Debug'):
+        	self._debug_txCtrl_zmqAddr_config.add_section('Debug')
+        self._debug_txCtrl_zmqAddr_config.set('Debug', 'txCtrl_zmqAddr', str(None))
+        self._debug_txCtrl_zmqAddr_config.write(open(self.configFile, 'w'))
         self._debug_syms_zmqAddr_config = ConfigParser.ConfigParser()
         self._debug_syms_zmqAddr_config.read(self.configFile)
         if not self._debug_syms_zmqAddr_config.has_section('Debug'):
@@ -470,6 +546,12 @@ class AX25_Modem(gr.top_block):
         	self._debug_sent_zmqAddr_config.add_section('Debug')
         self._debug_sent_zmqAddr_config.set('Debug', 'sent_zmqAddr', str(None))
         self._debug_sent_zmqAddr_config.write(open(self.configFile, 'w'))
+        self._debug_rxCtrl_zmqAddr_config = ConfigParser.ConfigParser()
+        self._debug_rxCtrl_zmqAddr_config.read(self.configFile)
+        if not self._debug_rxCtrl_zmqAddr_config.has_section('Debug'):
+        	self._debug_rxCtrl_zmqAddr_config.add_section('Debug')
+        self._debug_rxCtrl_zmqAddr_config.set('Debug', 'rxCtrl_zmqAddr', str(None))
+        self._debug_rxCtrl_zmqAddr_config.write(open(self.configFile, 'w'))
         self._debug_recv_zmqAddr_config = ConfigParser.ConfigParser()
         self._debug_recv_zmqAddr_config.read(self.configFile)
         if not self._debug_recv_zmqAddr_config.has_section('Debug'):
@@ -620,12 +702,6 @@ class AX25_Modem(gr.top_block):
         	self._tx_ant_config.add_section('Transmit')
         self._tx_ant_config.set('Transmit', 'ant', str(None))
         self._tx_ant_config.write(open(self.configFile, 'w'))
-        self._rx_rfGain_config = ConfigParser.ConfigParser()
-        self._rx_rfGain_config.read(self.configFile)
-        if not self._rx_rfGain_config.has_section('Receive'):
-        	self._rx_rfGain_config.add_section('Receive')
-        self._rx_rfGain_config.set('Receive', 'rfGain', str(None))
-        self._rx_rfGain_config.write(open(self.configFile, 'w'))
         self._rx_ppm_config = ConfigParser.ConfigParser()
         self._rx_ppm_config.read(self.configFile)
         if not self._rx_ppm_config.has_section('Receive'):
@@ -685,6 +761,15 @@ class AX25_Modem(gr.top_block):
         self.settings_1 = settings_1
         self.set_settings(self.settings_1)
 
+    def get_rx_fs(self):
+        return self.rx_fs
+
+    def set_rx_fs(self, rx_fs):
+        self.rx_fs = rx_fs
+        self.set_f_nco(self.rx_fs/4.0)
+        self.blocks_rotator_cc_0.set_phase_inc(-2*math.pi*self.f_nco/self.rx_fs)
+        self.AX25_AFSK_Demodulator_0.set_Fs(self.rx_fs)
+
     def get_logLvl(self):
         return self.logLvl
 
@@ -697,7 +782,6 @@ class AX25_Modem(gr.top_block):
 
     def set_tx_rfGain(self, tx_rfGain):
         self.tx_rfGain = tx_rfGain
-        self.limesdr_source_0.set_gain(self.tx_rfGain,0)
         self.limesdr_sink_0.set_gain(self.tx_rfGain,0)
 
     def get_tx_ppm(self):
@@ -762,6 +846,7 @@ class AX25_Modem(gr.top_block):
 
     def set_rx_rfGain(self, rx_rfGain):
         self.rx_rfGain = rx_rfGain
+        self.limesdr_source_0.set_gain(self.rx_rfGain,0)
 
     def get_rx_ppm(self):
         return self.rx_ppm
@@ -774,13 +859,6 @@ class AX25_Modem(gr.top_block):
 
     def set_rx_ifGain(self, rx_ifGain):
         self.rx_ifGain = rx_ifGain
-
-    def get_rx_fs(self):
-        return self.rx_fs
-
-    def set_rx_fs(self, rx_fs):
-        self.rx_fs = rx_fs
-        self.AX25_AFSK_Demodulator_0.set_Fs(self.rx_fs)
 
     def get_rx_deviceArgs(self):
         return self.rx_deviceArgs
@@ -811,6 +889,14 @@ class AX25_Modem(gr.top_block):
 
     def set_rootLogger(self, rootLogger):
         self.rootLogger = rootLogger
+
+    def get_f_nco(self):
+        return self.f_nco
+
+    def set_f_nco(self, f_nco):
+        self.f_nco = f_nco
+        self.limesdr_source_0.set_nco(self.f_nco,0)
+        self.blocks_rotator_cc_0.set_phase_inc(-2*math.pi*self.f_nco/self.rx_fs)
 
     def get_demod_pllLoopBw(self):
         return self.demod_pllLoopBw
@@ -848,6 +934,12 @@ class AX25_Modem(gr.top_block):
         self.demod_agcAttack = demod_agcAttack
         self.analog_agc2_xx_0.set_attack_rate(self.demod_agcAttack if (self.demod_agcEnable) else 0.0)
 
+    def get_debug_txCtrl_zmqAddr(self):
+        return self.debug_txCtrl_zmqAddr
+
+    def set_debug_txCtrl_zmqAddr(self, debug_txCtrl_zmqAddr):
+        self.debug_txCtrl_zmqAddr = debug_txCtrl_zmqAddr
+
     def get_debug_syms_zmqAddr(self):
         return self.debug_syms_zmqAddr
 
@@ -871,6 +963,12 @@ class AX25_Modem(gr.top_block):
 
     def set_debug_sent_zmqAddr(self, debug_sent_zmqAddr):
         self.debug_sent_zmqAddr = debug_sent_zmqAddr
+
+    def get_debug_rxCtrl_zmqAddr(self):
+        return self.debug_rxCtrl_zmqAddr
+
+    def set_debug_rxCtrl_zmqAddr(self, debug_rxCtrl_zmqAddr):
+        self.debug_rxCtrl_zmqAddr = debug_rxCtrl_zmqAddr
 
     def get_debug_recv_zmqAddr(self):
         return self.debug_recv_zmqAddr
@@ -1025,9 +1123,20 @@ def main(top_block_cls=AX25_Modem, options=None):
     if gr.enable_realtime_scheduling() != gr.RT_OK:
         print "Error: failed to enable real-time scheduling."
 
+    if StrictVersion("4.5.0") <= StrictVersion(Qt.qVersion()) < StrictVersion("5.0.0"):
+        style = gr.prefs().get_string('qtgui', 'style', 'raster')
+        Qt.QApplication.setGraphicsSystem(style)
+    qapp = Qt.QApplication(sys.argv)
+
     tb = top_block_cls(configFile=options.configFile, logLevel=options.logLevel)
     tb.start()
-    tb.wait()
+    tb.show()
+
+    def quitting():
+        tb.stop()
+        tb.wait()
+    qapp.aboutToQuit.connect(quitting)
+    qapp.exec_()
 
 
 if __name__ == '__main__':
