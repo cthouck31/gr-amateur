@@ -4,7 +4,7 @@
   <key>amateur_KISS_TNC</key>
   <category>[Amateur]</category>
   <import>import amateur</import>
-  <make>amateur.KISS_TNC($bitrate, $numPre, $numPost, $portNum, $csma)</make>
+  <make>amateur.KISS_TNC($bitrate, $numPre, $numPost, $portNum, $csma, txGain=$txGain,rxGain=$rxGain)</make>
   <!-- Make one 'param' node for every Parameter you want settable from the GUI.
        Sub-nodes:
        * name
@@ -47,6 +47,19 @@
             <key>0</key>
         </option>
   </param>
+  <param>
+    <name>TX Gain</name>
+    <key>txGain</key>
+    <value>60.0</value>
+    <type>float</type>
+  </param>
+  <param>
+    <name>RX Gain</name>
+    <key>rxGain</key>
+    <value>60.0</value>
+    <type>float</type>
+  </param>
+
 
   <!-- Make one 'sink' node per input. Sub-nodes:
        * name (an identifier for the GUI)
@@ -59,7 +72,7 @@
     <optional>1</optional>
   </sink>
   <sink>
-    <name>modem_resp</name>
+    <name>rx_data</name>
     <type>message</type>
     <optional>1</optional>
   </sink>
@@ -75,12 +88,27 @@
        * vlen
        * optional (set to 1 for optional inputs) -->
   <source>
-    <name>modem_req</name>
+    <name>tx_cmd</name>
     <type>message</type>
     <optional>1</optional>
   </source>
   <source>
-    <name>modem_data</name>
+    <name>rx_cmd</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>ext_cmd</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>modem_cmd</name>
+    <type>message</type>
+    <optional>1</optional>
+  </source>
+  <source>
+    <name>tx_data</name>
     <type>message</type>
     <optional>1</optional>
   </source>

@@ -5,7 +5,7 @@
 # Title: AX.25 - AFSK1200 Modem
 # Author: cthouck31
 # Description: Modem for communicating via AX.25 w/ AFSK1200 modulation (APRS, etc).
-# Generated: Thu May  7 01:02:08 2020
+# Generated: Fri May  8 15:26:14 2020
 ##################################################
 
 
@@ -62,7 +62,7 @@ class AX25_Modem(gr.top_block):
         self._tx_rfGain_config = ConfigParser.ConfigParser()
         self._tx_rfGain_config.read(configFile)
         try: tx_rfGain = self._tx_rfGain_config.getfloat('Transmit', 'rfGain')
-        except: tx_rfGain = 0
+        except: tx_rfGain = 30
         self.tx_rfGain = tx_rfGain
         self._tx_ppm_config = ConfigParser.ConfigParser()
         self._tx_ppm_config.read(configFile)
@@ -108,7 +108,7 @@ class AX25_Modem(gr.top_block):
         self._rx_rfGain_config = ConfigParser.ConfigParser()
         self._rx_rfGain_config.read(configFile)
         try: rx_rfGain = self._rx_rfGain_config.getfloat('Receive', 'rfGain')
-        except: rx_rfGain = 30
+        except: rx_rfGain = 60
         self.rx_rfGain = rx_rfGain
         self._rx_ppm_config = ConfigParser.ConfigParser()
         self._rx_ppm_config.read(configFile)
@@ -343,7 +343,7 @@ class AX25_Modem(gr.top_block):
         self.analog_agc2_xx_0 = analog.agc2_cc(demod_agcAttack if (demod_agcEnable) else 0.0, demod_agcDecay if (demod_agcEnable) else 0.0, 1.0, 1.0)
         self.analog_agc2_xx_0.set_max_gain(65536)
         self.amateur_Serial_Radio_Controller_0 = amateur.Serial_Radio_Controller("/dev/ttyACM0", 9600)
-        self.amateur_KISS_TNC_0 = amateur.KISS_TNC(afsk_bitRate, ax25_numPreambles, ax25_numPostambles, 0, 1)
+        self.amateur_KISS_TNC_0 = amateur.KISS_TNC(afsk_bitRate, ax25_numPreambles, ax25_numPostambles, 0, 1, txGain=tx_rfGain,rxGain=rx_rfGain)
         self.AX25_AFSK_Demodulator_0 = AX25_AFSK_Demodulator(
             Fs=rx_fs,
             Mark=afsk_markFreq,
@@ -371,14 +371,14 @@ class AX25_Modem(gr.top_block):
         ##################################################
         # Connections
         ##################################################
-        self.msg_connect((self.AX25_AFSK_Demodulator_0, 'out'), (self.amateur_KISS_TNC_0, 'modem_resp'))
+        self.msg_connect((self.AX25_AFSK_Demodulator_0, 'out'), (self.amateur_KISS_TNC_0, 'rx_data'))
         self.msg_connect((self.AX25_AFSK_Demodulator_0, 'out'), (self.zeromq_pub_msg_sink_0, 'in'))
-        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_data'), (self.AX25_AFSK1200_Modulator_0, 'in'))
-        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_req'), (self.amateur_Serial_Radio_Controller_0, 'cmd'))
-        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_req'), (self.blocks_message_debug_0, 'print'))
+        self.msg_connect((self.amateur_KISS_TNC_0, 'tx_data'), (self.AX25_AFSK1200_Modulator_0, 'in'))
+        self.msg_connect((self.amateur_KISS_TNC_0, 'ext_cmd'), (self.amateur_Serial_Radio_Controller_0, 'cmd'))
         self.msg_connect((self.amateur_KISS_TNC_0, 'tnc_resp'), (self.blocks_socket_pdu_0, 'pdus'))
-        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_req'), (self.limesdr_source_0, 'command'))
-        self.msg_connect((self.amateur_KISS_TNC_0, 'modem_data'), (self.zeromq_pub_msg_sink_0_0, 'in'))
+        self.msg_connect((self.amateur_KISS_TNC_0, 'tx_cmd'), (self.limesdr_sink_0, 'command'))
+        self.msg_connect((self.amateur_KISS_TNC_0, 'rx_cmd'), (self.limesdr_source_0, 'command'))
+        self.msg_connect((self.amateur_KISS_TNC_0, 'tx_data'), (self.zeromq_pub_msg_sink_0_0, 'in'))
         self.msg_connect((self.blocks_message_strobe_0, 'strobe'), (self.zeromq_pub_msg_sink_0_0_0, 'in'))
         self.msg_connect((self.blocks_socket_pdu_0, 'pdus'), (self.amateur_KISS_TNC_0, 'tnc_req'))
         self.msg_connect((self.zeromq_sub_msg_source_0, 'out'), (self.limesdr_sink_0, 'command'))

@@ -5,7 +5,7 @@
 # Title: AX.25 - AFSK1200 Modem GUI
 # Author: cthouck31
 # Description: GUI for the AX.25 - AFSK1200 Modem application.
-# Generated: Thu May  7 01:02:52 2020
+# Generated: Fri May  8 15:25:13 2020
 ##################################################
 
 from distutils.version import StrictVersion
@@ -93,7 +93,7 @@ class AX25_Modem_GUI(gr.top_block, Qt.QWidget):
         self._rx_freq_config = ConfigParser.ConfigParser()
         self._rx_freq_config.read(configFile)
         try: rx_freq = self._rx_freq_config.getfloat('Receive', 'freq')
-        except: rx_freq = 93.1e6
+        except: rx_freq = 144.39e6
         self.rx_freq = rx_freq
         self._rx_deviceArgs_config = ConfigParser.ConfigParser()
         self._rx_deviceArgs_config.read(configFile)
@@ -474,7 +474,6 @@ class AX25_Modem_GUI(gr.top_block, Qt.QWidget):
         [self.ctrlTab_grid_layout_0.setRowStretch(r,1) for r in range(0,1)]
         [self.ctrlTab_grid_layout_0.setColumnStretch(c,1) for c in range(0,1)]
         self.blocks_uchar_to_float_0 = blocks.uchar_to_float()
-        self.amateur_AX25_Packet_Decoder_0_0 = amateur.AX25_Packet_Decoder()
         self.amateur_AX25_Packet_Decoder_0 = amateur.AX25_Packet_Decoder()
 
         ##################################################
@@ -487,7 +486,6 @@ class AX25_Modem_GUI(gr.top_block, Qt.QWidget):
         self.msg_connect((self.qtgui_edit_box_msg_0_0_0, 'msg'), (self.zeromq_pub_msg_sink_0_0_0_0, 'in'))
         self.msg_connect((self.qtgui_edit_box_msg_0_1, 'msg'), (self.zeromq_pub_msg_sink_0_0_0, 'in'))
         self.msg_connect((self.zeromq_sub_msg_source_0, 'out'), (self.amateur_AX25_Packet_Decoder_0, 'in'))
-        self.msg_connect((self.zeromq_sub_msg_source_0_0, 'out'), (self.amateur_AX25_Packet_Decoder_0_0, 'in'))
         self.connect((self.blocks_uchar_to_float_0, 0), (self.qtgui_number_sink_0_0, 1))
         self.connect((self.zeromq_sub_source_0, 0), (self.qtgui_freq_sink_x_0, 0))
         self.connect((self.zeromq_sub_source_0, 0), (self.qtgui_waterfall_sink_x_0, 0))

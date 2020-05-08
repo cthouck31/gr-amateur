@@ -691,7 +691,7 @@
     </param>
     <param>
       <key>value</key>
-      <value>93.1e6</value>
+      <value>144.39e6</value>
     </param>
     <param>
       <key>_enabled</key>
@@ -957,7 +957,7 @@
     </param>
     <param>
       <key>_enabled</key>
-      <value>True</value>
+      <value>0</value>
     </param>
     <param>
       <key>_coordinate</key>

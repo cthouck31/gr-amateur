@@ -37,7 +37,7 @@ class KISS_TNC(gr.sync_block):
     """
     docstring for block KISS_TNC
     """
-    def __init__(self, bitrate=1200.0, numPreambles=1, numPostambles=1, portNum=0, csma=True):
+    def __init__(self, bitrate=1200.0, numPreambles=1, numPostambles=1, portNum=0, csma=True, rxGain=60.0, txGain=60.0):
         gr.sync_block.__init__(self,
             name="KISS_TNC",
             in_sig=[np.uint8] if csma else None,
@@ -49,6 +49,8 @@ class KISS_TNC(gr.sync_block):
         self.numPost = int(numPostambles)
         self.portNum = int(portNum)
         self.csma    = csma
+        self.rxGain  = rxGain
+        self.txGain  = txGain
 
         # Set to defaults.
         self.dspLock = threading.Lock()
@@ -58,13 +60,22 @@ class KISS_TNC(gr.sync_block):
 
         # TNC -> Modem.
         self.message_port_register_in(pmt.intern("tnc_req"))
-        self.message_port_register_out(pmt.intern("modem_req"))
-        self.message_port_register_out(pmt.intern("modem_data"))
         self.set_msg_handler(pmt.intern("tnc_req"), self._tncInputHandler)
+        # Transmitter commands.
+        self.message_port_register_out(pmt.intern("tx_cmd"))
+        # Receive commands.
+        self.message_port_register_out(pmt.intern("rx_cmd"))
+        # External device commands.
+        self.message_port_register_out(pmt.intern("ext_cmd"))
+        # Modem commands.
+        self.message_port_register_out(pmt.intern("modem_cmd"))
+        # Modem data.
+        self.message_port_register_out(pmt.intern("tx_data"))
+
         # Modem -> TNC.
-        self.message_port_register_in(pmt.intern("modem_resp"))
+        self.message_port_register_in(pmt.intern("rx_data"))
         self.message_port_register_out(pmt.intern("tnc_resp"))
-        self.set_msg_handler(pmt.intern("modem_resp"), self._modemInputHandler)
+        self.set_msg_handler(pmt.intern("rx_data"), self._modemInputHandler)
 
         # Control handlers.
         self.handler = {
@@ -89,7 +100,7 @@ class KISS_TNC(gr.sync_block):
             self.txDelay     = 100.0
             self.persistence = 0.25
             self.slotIntvl   = 100.0
-            self.txTail      = 500.0
+            self.txTail      = 750.0
             self.fullDuplex  = False
             self.passthrough = False
             self.carrTimeout = 30.0
@@ -163,7 +174,7 @@ class KISS_TNC(gr.sync_block):
             # Check if passthrough is enabled (no modem control).
             if self.passthrough:
                 logger.debug("Passthrough packet transmitted!")
-                self.message_port_pub(pmt.intern("modem_data"),
+                self.message_port_pub(pmt.intern("tx_data"),
                                       pmt.cons(pmt.PMT_NIL,
                                                pmt.init_u8vector(len(data), data)))
                 return
@@ -193,19 +204,22 @@ class KISS_TNC(gr.sync_block):
                     continue
 
                 logger.debug("Turning down RX gain.")
-                self.message_port_pub(pmt.intern("modem_req"),
+                self.message_port_pub(pmt.intern("rx_cmd"),
                                       pmt.cons(pmt.intern("gain"), pmt.from_float(0.0)))
 
                 logger.debug("Transmitting packet!")
                 # Enable PA.
-                self.message_port_pub(pmt.intern("modem_req"),
+                self.message_port_pub(pmt.intern("ext_cmd"),
                                       pmt.cons(pmt.intern("pa"),
                                                pmt.from_long(1)))
+                self.message_port_pub(pmt.intern("tx_cmd"),
+                                      pmt.cons(pmt.intern("gain"),
+                                               pmt.from_long(60)))
                 # Delay for TX delay.
                 time.sleep(self.txDelay*1e-3)
 
                 # Send chunk.
-                self.message_port_pub(pmt.intern("modem_data"),
+                self.message_port_pub(pmt.intern("tx_data"),
                                       pmt.cons(pmt.PMT_NIL,
                                                pmt.init_u8vector(len(data), data)))
 
@@ -214,12 +228,16 @@ class KISS_TNC(gr.sync_block):
                 logger.debug("Sending burst ({:1f} msec)...".format(burstTime*1e3))
                 time.sleep(burstTime)
 
-                self.message_port_pub(pmt.intern("modem_req"),
+                self.message_port_pub(pmt.intern("ext_cmd"),
                                       pmt.cons(pmt.intern("pa"),
                                                pmt.from_long(0)))
 
-                self.message_port_pub(pmt.intern("modem_req"),
-                                      pmt.cons(pmt.intern("gain"), pmt.from_float(40.0)))
+                self.message_port_pub(pmt.intern("tx_cmd"),
+                                      pmt.cons(pmt.intern("gain"),
+                                               pmt.from_long(0)))
+
+                self.message_port_pub(pmt.intern("rx_cmd"),
+                                      pmt.cons(pmt.intern("gain"), pmt.from_float(self.rxGain)))
 
                 break
 
@@ -251,6 +269,12 @@ class KISS_TNC(gr.sync_block):
 
     def setPassthrough(self, data):
         self.passthrough = bool(frame.get("param", self.passthrough))
+
+    def setTxGain(self, gain):
+        self.txGain = gain
+
+    def setRxGain(self, gain):
+        self.rxGain = gain
 
     def printError(self, frame):
         logger.error("Invalid frame decoded: %s" % str(frame))
